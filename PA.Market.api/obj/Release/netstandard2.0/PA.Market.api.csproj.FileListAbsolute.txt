@@ -1,0 +1,13 @@
+D:\Works\Git\TradingAnalyzer\PA.Market.api\bin\Release\netstandard2.0\PA.Market.api.deps.json
+D:\Works\Git\TradingAnalyzer\PA.Market.api\bin\Release\netstandard2.0\PA.Market.api.dll
+D:\Works\Git\TradingAnalyzer\PA.Market.api\bin\Release\netstandard2.0\PA.Market.api.pdb
+D:\Works\Git\TradingAnalyzer\PA.Market.api\bin\Release\netstandard2.0\PA.Binance.Shared.dll
+D:\Works\Git\TradingAnalyzer\PA.Market.api\bin\Release\netstandard2.0\PA.Binance.Shared.pdb
+D:\Works\Git\TradingAnalyzer\PA.Market.api\obj\Release\netstandard2.0\PA.Market.api.GeneratedMSBuildEditorConfig.editorconfig
+D:\Works\Git\TradingAnalyzer\PA.Market.api\obj\Release\netstandard2.0\PA.Market.api.AssemblyInfoInputs.cache
+D:\Works\Git\TradingAnalyzer\PA.Market.api\obj\Release\netstandard2.0\PA.Market.api.AssemblyInfo.cs
+D:\Works\Git\TradingAnalyzer\PA.Market.api\obj\Release\netstandard2.0\PA.Market.api.csproj.CoreCompileInputs.cache
+D:\Works\Git\TradingAnalyzer\PA.Market.api\obj\Release\netstandard2.0\PA.Market.api.csproj.CopyComplete
+D:\Works\Git\TradingAnalyzer\PA.Market.api\obj\Release\netstandard2.0\PA.Market.api.dll
+D:\Works\Git\TradingAnalyzer\PA.Market.api\obj\Release\netstandard2.0\PA.Market.api.pdb
+D:\Works\Git\TradingAnalyzer\PA.Market.api\obj\Release\netstandard2.0\PA.Market.api.csproj.AssemblyReference.cache

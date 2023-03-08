@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="RestSharp" Version="108.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="PA.Binance.Shared">
+      <HintPath>..\..\PA.Binance.Api\Pa.Binance.Shared\bin\Debug\netstandard2.0\PA.Binance.Shared.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>

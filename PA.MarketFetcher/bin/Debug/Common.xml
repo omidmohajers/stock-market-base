@@ -1,0 +1,64 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Common</name>
+    </assembly>
+    <members>
+        <member name="T:Binance.Common.BinanceClientException">
+            <summary>
+            Binance exception class for any errors throw as a result of the misuse of the API or the library.
+            </summary>
+        </member>
+        <member name="T:Binance.Common.BinanceHmac">
+            <summary>
+            Binance HMAC signature signing.
+            </summary>
+        </member>
+        <member name="T:Binance.Common.BinanceHttpException">
+            <summary>
+            Binance exception class for any errors throw as a result of communication via http.
+            </summary>
+        </member>
+        <member name="T:Binance.Common.BinanceLoggingHandler">
+            <summary>
+            Binance message processing logging handler.<para/>
+            A middlewear to listen and log any request or response.
+            </summary>
+        </member>
+        <member name="T:Binance.Common.BinanceRsa">
+            <summary>
+            Binance RSA signature signing.
+            </summary>
+        </member>
+        <member name="T:Binance.Common.BinanceServerException">
+            <summary>
+            Binance exception class for any errors throw as a result internal server issues.
+            </summary>
+        </member>
+        <member name="T:Binance.Common.BinanceService">
+            <summary>
+            Binance base class for REST sections of the API.
+            </summary>
+        </member>
+        <member name="T:Binance.Common.BinanceWebSocket">
+            <summary>
+            Binance web socket wrapper.
+            </summary>
+        </member>
+        <member name="T:Binance.Common.BinanceWebSocketHandler">
+            <summary>
+            Binance humble object for <see cref="T:System.Net.WebSockets.ClientWebSocket" />.
+            </summary>
+        </member>
+        <member name="T:Binance.Common.IBinanceSignatureService">
+            <summary>
+            Interface for signing payloads.
+            </summary>
+        </member>
+        <member name="T:Binance.Common.IBinanceWebSocketHandler">
+            <summary>
+            Binance web socket handler interface.
+            </summary>
+        </member>
+    </members>
+</doc>

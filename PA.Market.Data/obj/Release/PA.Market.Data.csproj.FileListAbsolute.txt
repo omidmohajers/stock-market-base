@@ -1,0 +1,13 @@
+D:\Works\Git\TradingAnalyzer\PA.Market.Data\bin\Release\PA.Market.Data.dll
+D:\Works\Git\TradingAnalyzer\PA.Market.Data\bin\Release\PA.Market.Data.pdb
+D:\Works\Git\TradingAnalyzer\PA.Market.Data\bin\Release\Automation.GeneralTable.dll
+D:\Works\Git\TradingAnalyzer\PA.Market.Data\bin\Release\PA.Binance.Shared.dll
+D:\Works\Git\TradingAnalyzer\PA.Market.Data\bin\Release\PropertyValidation.dll
+D:\Works\Git\TradingAnalyzer\PA.Market.Data\bin\Release\Automation.GeneralTable.pdb
+D:\Works\Git\TradingAnalyzer\PA.Market.Data\bin\Release\PA.Binance.Shared.pdb
+D:\Works\Git\TradingAnalyzer\PA.Market.Data\bin\Release\PropertyValidation.pdb
+D:\Works\Git\TradingAnalyzer\PA.Market.Data\obj\Release\PA.Market.Data.csproj.CoreCompileInputs.cache
+D:\Works\Git\TradingAnalyzer\PA.Market.Data\obj\Release\PA.Market.Data.csproj.CopyComplete
+D:\Works\Git\TradingAnalyzer\PA.Market.Data\obj\Release\PA.Market.Data.dll
+D:\Works\Git\TradingAnalyzer\PA.Market.Data\obj\Release\PA.Market.Data.pdb
+D:\Works\Git\TradingAnalyzer\PA.Market.Data\obj\Release\PA.Market.Data.csproj.AssemblyReference.cache

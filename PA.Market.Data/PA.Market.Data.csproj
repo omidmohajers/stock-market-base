@@ -37,9 +37,6 @@
     <Reference Include="Automation.GeneralTable">
       <HintPath>..\..\..\Libraries\Automation.GeneralTable.dll</HintPath>
     </Reference>
-    <Reference Include="PA.Binance.Shared">
-      <HintPath>..\..\PA.Binance.Api\Pa.Binance.Shared\bin\Debug\netstandard2.0\PA.Binance.Shared.dll</HintPath>
-    </Reference>
     <Reference Include="PropertyValidation">
       <HintPath>..\..\..\Libraries\PropertyValidation.dll</HintPath>
     </Reference>
@@ -63,6 +60,11 @@
     <Compile Include="Entities\WatchList.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\PA.Binance.Api\Pa.Binance.Shared\PA.Binance.Shared.csproj">
+      <Project>{2e81888a-43f5-45d7-9ad2-028f4f96e499}</Project>
+      <Name>PA.Binance.Shared</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

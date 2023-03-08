@@ -1,17 +1,89 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Works\\Git\\TradingAnalyzer\\PA.Market.api\\PA.Market.api.csproj": {}
+    "D:\\Works\\Git\\Market Asistant\\StockMarketBase\\PA.Market.api\\PA.Market.api.csproj": {}
   },
   "projects": {
-    "D:\\Works\\Git\\TradingAnalyzer\\PA.Market.api\\PA.Market.api.csproj": {
+    "D:\\Works\\Git\\Market Asistant\\StockMarketBase\\PA.Market.api\\PA.Market.api.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Works\\Git\\TradingAnalyzer\\PA.Market.api\\PA.Market.api.csproj",
+        "projectUniqueName": "D:\\Works\\Git\\Market Asistant\\StockMarketBase\\PA.Market.api\\PA.Market.api.csproj",
         "projectName": "PA.Market.api",
-        "projectPath": "D:\\Works\\Git\\TradingAnalyzer\\PA.Market.api\\PA.Market.api.csproj",
+        "projectPath": "D:\\Works\\Git\\Market Asistant\\StockMarketBase\\PA.Market.api\\PA.Market.api.csproj",
         "packagesPath": "C:\\Users\\OMID\\.nuget\\packages\\",
-        "outputPath": "D:\\Works\\Git\\TradingAnalyzer\\PA.Market.api\\obj\\",
+        "outputPath": "D:\\Works\\Git\\Market Asistant\\StockMarketBase\\PA.Market.api\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
+          "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\OMID\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "netstandard2.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netstandard2.0": {
+            "targetAlias": "netstandard2.0",
+            "projectReferences": {
+              "D:\\Works\\Git\\PA.Binance.Api\\Pa.Binance.Shared\\PA.Binance.Shared.csproj": {
+                "projectPath": "D:\\Works\\Git\\PA.Binance.Api\\Pa.Binance.Shared\\PA.Binance.Shared.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netstandard2.0": {
+          "targetAlias": "netstandard2.0",
+          "dependencies": {
+            "NETStandard.Library": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[2.0.3, )",
+              "autoReferenced": true
+            },
+            "RestSharp": {
+              "target": "Package",
+              "version": "[108.0.3, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.408\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "D:\\Works\\Git\\PA.Binance.Api\\Pa.Binance.Shared\\PA.Binance.Shared.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "D:\\Works\\Git\\PA.Binance.Api\\Pa.Binance.Shared\\PA.Binance.Shared.csproj",
+        "projectName": "PA.Binance.Shared",
+        "projectPath": "D:\\Works\\Git\\PA.Binance.Api\\Pa.Binance.Shared\\PA.Binance.Shared.csproj",
+        "packagesPath": "C:\\Users\\OMID\\.nuget\\packages\\",
+        "outputPath": "D:\\Works\\Git\\PA.Binance.Api\\Pa.Binance.Shared\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
@@ -52,10 +124,6 @@
               "target": "Package",
               "version": "[2.0.3, )",
               "autoReferenced": true
-            },
-            "RestSharp": {
-              "target": "Package",
-              "version": "[108.0.3, )"
             }
           },
           "imports": [

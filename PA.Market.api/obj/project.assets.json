@@ -132,6 +132,16 @@
         "runtime": {
           "lib/netstandard2.0/System.Threading.Tasks.Extensions.dll": {}
         }
+      },
+      "PA.Binance.Shared/1.0.0": {
+        "type": "project",
+        "framework": ".NETStandard,Version=v2.0",
+        "compile": {
+          "bin/placeholder/PA.Binance.Shared.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/PA.Binance.Shared.dll": {}
+        }
       }
     }
   },
@@ -537,11 +547,17 @@
         "useSharedDesignerContext.txt",
         "version.txt"
       ]
+    },
+    "PA.Binance.Shared/1.0.0": {
+      "type": "project",
+      "path": "../../../PA.Binance.Api/Pa.Binance.Shared/PA.Binance.Shared.csproj",
+      "msbuildProject": "../../../PA.Binance.Api/Pa.Binance.Shared/PA.Binance.Shared.csproj"
     }
   },
   "projectFileDependencyGroups": {
     ".NETStandard,Version=v2.0": [
       "NETStandard.Library >= 2.0.3",
+      "PA.Binance.Shared >= 1.0.0",
       "RestSharp >= 108.0.3"
     ]
   },
@@ -553,11 +569,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Works\\Git\\TradingAnalyzer\\PA.Market.api\\PA.Market.api.csproj",
+      "projectUniqueName": "D:\\Works\\Git\\Market Asistant\\StockMarketBase\\PA.Market.api\\PA.Market.api.csproj",
       "projectName": "PA.Market.api",
-      "projectPath": "D:\\Works\\Git\\TradingAnalyzer\\PA.Market.api\\PA.Market.api.csproj",
+      "projectPath": "D:\\Works\\Git\\Market Asistant\\StockMarketBase\\PA.Market.api\\PA.Market.api.csproj",
       "packagesPath": "C:\\Users\\OMID\\.nuget\\packages\\",
-      "outputPath": "D:\\Works\\Git\\TradingAnalyzer\\PA.Market.api\\obj\\",
+      "outputPath": "D:\\Works\\Git\\Market Asistant\\StockMarketBase\\PA.Market.api\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
@@ -580,7 +596,11 @@
       "frameworks": {
         "netstandard2.0": {
           "targetAlias": "netstandard2.0",
-          "projectReferences": {}
+          "projectReferences": {
+            "D:\\Works\\Git\\PA.Binance.Api\\Pa.Binance.Shared\\PA.Binance.Shared.csproj": {
+              "projectPath": "D:\\Works\\Git\\PA.Binance.Api\\Pa.Binance.Shared\\PA.Binance.Shared.csproj"
+            }
+          }
         }
       },
       "warningProperties": {

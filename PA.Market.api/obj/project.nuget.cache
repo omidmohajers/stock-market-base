@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "3f4zhHNn4vdRPQ7OmQUx0rlmLbpmIOTvA8PKgdNUT5VrixUW1TTTBHKUSIxb9jfuzOSU0ri/deMvYGEaapsgvQ==",
+  "dgSpecHash": "OhH6WBTh/9VYgS2go5dkZZplxC5Ya1iL6mYDe6FwP+/PafcNaKpISUdLn+aHE2IYeE2XdjAp4F9iH0tvyssnKQ==",
   "success": true,
-  "projectFilePath": "D:\\Works\\Git\\TradingAnalyzer\\PA.Market.api\\PA.Market.api.csproj",
+  "projectFilePath": "D:\\Works\\Git\\Market Asistant\\StockMarketBase\\PA.Market.api\\PA.Market.api.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\OMID\\.nuget\\packages\\microsoft.bcl.asyncinterfaces\\5.0.0\\microsoft.bcl.asyncinterfaces.5.0.0.nupkg.sha512",
     "C:\\Users\\OMID\\.nuget\\packages\\microsoft.netcore.platforms\\1.1.0\\microsoft.netcore.platforms.1.1.0.nupkg.sha512",

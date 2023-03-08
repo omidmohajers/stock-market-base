@@ -34,12 +34,6 @@
     <Reference Include="Common">
       <HintPath>..\..\PA.Binance.Api\Src\Common\bin\Debug\netstandard2.0\Common.dll</HintPath>
     </Reference>
-    <Reference Include="PA.Binance.Futures">
-      <HintPath>..\..\PA.Binance.Api\PA.Binance.Futures\bin\Debug\netstandard2.0\PA.Binance.Futures.dll</HintPath>
-    </Reference>
-    <Reference Include="PA.Binance.Shared">
-      <HintPath>..\..\PA.Binance.Api\Pa.Binance.Shared\bin\Debug\netstandard2.0\PA.Binance.Shared.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -60,17 +54,25 @@
     <Compile Include="Total\TotalMarketSession.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Binance\sapi\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\PA.Binance.Api\PA.Binance.Futures\PA.Binance.Futures.csproj">
+      <Project>{1cdb1e64-0190-4a0d-ade1-f19512178eef}</Project>
+      <Name>PA.Binance.Futures</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\PA.Binance.Api\Pa.Binance.Shared\PA.Binance.Shared.csproj">
+      <Project>{2e81888a-43f5-45d7-9ad2-028f4f96e499}</Project>
+      <Name>PA.Binance.Shared</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PA.Market.api\PA.Market.api.csproj">
-      <Project>{D6589B7D-3E78-481B-B40B-E47196D28588}</Project>
+      <Project>{f638c24d-9ab1-4571-8453-a13704657e63}</Project>
       <Name>PA.Market.api</Name>
     </ProjectReference>
     <ProjectReference Include="..\PA.Market.Data\PA.Market.Data.csproj">
-      <Project>{FDBBE08E-63D0-4C5C-88E3-62F05F2E3FFA}</Project>
+      <Project>{fdbbe08e-63d0-4c5c-88e3-62f05f2e3ffa}</Project>
       <Name>PA.Market.Data</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Binance\sapi\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

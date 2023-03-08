@@ -31,9 +31,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="PA.Binance.Shared">
-      <HintPath>..\..\PA.Binance.Api\Pa.Binance.Shared\bin\Debug\netstandard2.0\PA.Binance.Shared.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -53,12 +50,16 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\PA.Binance.Api\Pa.Binance.Shared\PA.Binance.Shared.csproj">
+      <Project>{2e81888a-43f5-45d7-9ad2-028f4f96e499}</Project>
+      <Name>PA.Binance.Shared</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PA.Market.Data\PA.Market.Data.csproj">
-      <Project>{FDBBE08E-63D0-4C5C-88E3-62F05F2E3FFA}</Project>
+      <Project>{fdbbe08e-63d0-4c5c-88e3-62f05f2e3ffa}</Project>
       <Name>PA.Market.Data</Name>
     </ProjectReference>
     <ProjectReference Include="..\PA.Market.Model\PA.Market.Model.csproj">
-      <Project>{8F27D166-BBE1-4E4A-BDE9-197DBD135EFA}</Project>
+      <Project>{8f27d166-bbe1-4e4a-bde9-197dbd135efa}</Project>
       <Name>PA.Market.Model</Name>
     </ProjectReference>
   </ItemGroup>

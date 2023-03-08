@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
@@ -9,9 +9,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="PA.Binance.Shared">
-      <HintPath>..\..\PA.Binance.Api\Pa.Binance.Shared\bin\Debug\netstandard2.0\PA.Binance.Shared.dll</HintPath>
-    </Reference>
+    <ProjectReference Include="..\..\..\PA.Binance.Api\Pa.Binance.Shared\PA.Binance.Shared.csproj" />
   </ItemGroup>
 
 </Project>

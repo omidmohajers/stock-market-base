@@ -11,3 +11,16 @@ D:\Works\Git\TradingAnalyzer\PA.Market.api\obj\Debug\netstandard2.0\PA.Market.ap
 D:\Works\Git\TradingAnalyzer\PA.Market.api\obj\Debug\netstandard2.0\PA.Market.api.dll
 D:\Works\Git\TradingAnalyzer\PA.Market.api\obj\Debug\netstandard2.0\PA.Market.api.pdb
 D:\Works\Git\TradingAnalyzer\PA.Market.api\obj\Debug\netstandard2.0\PA.Market.api.csproj.AssemblyReference.cache
+D:\Works\Git\Market Asistant\StockMarketBase\PA.Market.api\obj\Debug\netstandard2.0\PA.Market.api.csproj.AssemblyReference.cache
+D:\Works\Git\Market Asistant\StockMarketBase\PA.Market.api\obj\Debug\netstandard2.0\PA.Market.api.GeneratedMSBuildEditorConfig.editorconfig
+D:\Works\Git\Market Asistant\StockMarketBase\PA.Market.api\obj\Debug\netstandard2.0\PA.Market.api.AssemblyInfoInputs.cache
+D:\Works\Git\Market Asistant\StockMarketBase\PA.Market.api\obj\Debug\netstandard2.0\PA.Market.api.AssemblyInfo.cs
+D:\Works\Git\Market Asistant\StockMarketBase\PA.Market.api\obj\Debug\netstandard2.0\PA.Market.api.csproj.CoreCompileInputs.cache
+D:\Works\Git\Market Asistant\StockMarketBase\PA.Market.api\obj\Debug\netstandard2.0\PA.Market.api.dll
+D:\Works\Git\Market Asistant\StockMarketBase\PA.Market.api\obj\Debug\netstandard2.0\PA.Market.api.pdb
+D:\Works\Git\Market Asistant\StockMarketBase\PA.Market.api\bin\Debug\netstandard2.0\PA.Market.api.deps.json
+D:\Works\Git\Market Asistant\StockMarketBase\PA.Market.api\bin\Debug\netstandard2.0\PA.Market.api.dll
+D:\Works\Git\Market Asistant\StockMarketBase\PA.Market.api\bin\Debug\netstandard2.0\PA.Market.api.pdb
+D:\Works\Git\Market Asistant\StockMarketBase\PA.Market.api\bin\Debug\netstandard2.0\PA.Binance.Shared.dll
+D:\Works\Git\Market Asistant\StockMarketBase\PA.Market.api\bin\Debug\netstandard2.0\PA.Binance.Shared.pdb
+D:\Works\Git\Market Asistant\StockMarketBase\PA.Market.api\obj\Debug\netstandard2.0\PA.Market.api.csproj.CopyComplete

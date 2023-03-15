@@ -405,8 +405,35 @@ using Automation.TableProvider;
 				command.Connection.Close();
 			}
 		}
+            public static Account Get(string username)
+            {
+                SqlCommand command = new SqlCommand("SP_SelectAccountByName", Database.Connection);
+                command.CommandType = CommandType.StoredProcedure;
 
-		public static List<Account> List()
+                command.Parameters.AddWithValue("@UserName", username);
+
+                command.Connection.Open();
+                try
+                {
+                    SqlDataReader reader = command.ExecuteReader();
+
+                    Account value = null;
+
+                    if (reader.Read())
+                        value = GetObjectFromDataReader(reader);
+
+                    if (!reader.IsClosed)
+                        reader.Close();
+
+                    return value;
+                }
+                finally
+                {
+                    command.Connection.Close();
+                }
+            }
+
+            public static List<Account> List()
 		{
 			SqlCommand command = new SqlCommand("SP_SelectAccountAll",Database.Connection);
 			command.CommandType = CommandType.StoredProcedure;

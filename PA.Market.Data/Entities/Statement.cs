@@ -31,6 +31,7 @@ namespace PA.StockMarket.DataEntities
 
 		public Statement()
 		{
+
 		}
 
 		#region Public Properties

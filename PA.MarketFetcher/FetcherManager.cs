@@ -48,5 +48,16 @@ namespace PA.MarketFetcher
                     return new FBinanceSession(interval) { Symbol = symbol };
             }
         }
+        public static async Task<DateTime> GetServerTimeAsync(long marketID)
+        {
+            DateTime d = DateTime.UtcNow;
+            IFetcher f = Fetchers.FirstOrDefault(o => o.Session.Symbol.MarketID == marketID);
+            if (f != null)
+            {
+                d = await f.Session.GetServerTimeAsync();
+            }
+            return d;
+
+        }
     }
 }

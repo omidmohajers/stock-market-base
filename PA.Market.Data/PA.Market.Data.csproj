@@ -54,6 +54,7 @@
     <Compile Include="Entities\Account.cs" />
     <Compile Include="Entities\Kline.cs" />
     <Compile Include="Entities\Market.cs" />
+    <Compile Include="Entities\MarketSetting.cs" />
     <Compile Include="Entities\Statement.cs" />
     <Compile Include="Entities\Strategy.cs" />
     <Compile Include="Entities\Symbol.cs" />

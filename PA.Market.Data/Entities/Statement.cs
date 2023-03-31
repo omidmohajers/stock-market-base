@@ -17,8 +17,7 @@ namespace PA.StockMarket.DataEntities
 	public partial class Statement : System.ComponentModel.INotifyPropertyChanged, ICloneable
 	{
 		protected long _iD;
-		protected long _accountID;
-		protected long _symbolID;
+		protected long _setupID;
 		protected decimal _levelPrice;
 		protected DateTime _levelOpenTime;
 		protected DateTime _signalOpenTime;
@@ -47,25 +46,14 @@ namespace PA.StockMarket.DataEntities
 			}
 		}
 
-		public long AccountID
+		public long SetupID
 		{
-			get { return _accountID; }
+			get { return _setupID; }
 			set
 			{
-				_accountID = value;
+				_setupID = value;
 				if (PropertyChanged != null)
-					PropertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs("AccountID"));
-			}
-		}
-
-		public long SymbolID
-		{
-			get { return _symbolID; }
-			set
-			{
-				_symbolID = value;
-				if (PropertyChanged != null)
-					PropertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs("SymbolID"));
+					PropertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs("SetupID"));
 			}
 		}
 
@@ -193,8 +181,7 @@ namespace PA.StockMarket.DataEntities
 		public void CopyData(Statement value)
 		{
 			this.ID = value.ID;
-			this.AccountID = value.AccountID;
-			this.SymbolID = value.SymbolID;
+			this.SetupID = value.SetupID;
 			this.LevelPrice = value.LevelPrice;
 			this.LevelOpenTime = value.LevelOpenTime;
 			this.SignalOpenTime = value.SignalOpenTime;
@@ -225,8 +212,7 @@ namespace PA.StockMarket.DataEntities
 			Statement obj = new Statement();
 
 			obj.ID = this.ID;
-			obj.AccountID = this.AccountID;
-			obj.SymbolID = this.SymbolID;
+			obj.SetupID = this.SetupID;
 			obj.LevelPrice = this.LevelPrice;
 			obj.LevelOpenTime = this.LevelOpenTime;
 			obj.SignalOpenTime = this.SignalOpenTime;
@@ -259,8 +245,7 @@ namespace PA.StockMarket.DataEntities
 				SqlCommand command = new SqlCommand("SP_InsertStatement", Database.Connection);
 				command.CommandType = CommandType.StoredProcedure;
 
-				command.Parameters.AddWithValue("@AccountID", value.AccountID);
-				command.Parameters.AddWithValue("@SymbolID", value.SymbolID);
+				command.Parameters.AddWithValue("@SetupID", value.SetupID);
 				command.Parameters.AddWithValue("@LevelPrice", value.LevelPrice);
 				command.Parameters.AddWithValue("@LevelOpenTime", value.LevelOpenTime);
 				command.Parameters.AddWithValue("@SignalOpenTime", value.SignalOpenTime);
@@ -295,8 +280,7 @@ namespace PA.StockMarket.DataEntities
 				command.CommandType = CommandType.StoredProcedure;
 
 				command.Parameters.AddWithValue("@ID", value.ID);
-				command.Parameters.AddWithValue("@AccountID", value.AccountID);
-				command.Parameters.AddWithValue("@SymbolID", value.SymbolID);
+				command.Parameters.AddWithValue("@SetupID", value.SetupID);
 				command.Parameters.AddWithValue("@LevelPrice", value.LevelPrice);
 				command.Parameters.AddWithValue("@LevelOpenTime", value.LevelOpenTime);
 				command.Parameters.AddWithValue("@SignalOpenTime", value.SignalOpenTime);
@@ -378,12 +362,12 @@ namespace PA.StockMarket.DataEntities
 
 			#region Delete By Foreign Keys
 
-			public static void DeleteByAccountID(long id)
+			public static void DeleteBySetupID(long id)
 			{
-				SqlCommand command = new SqlCommand("SP_DeleteStatementByAccountID", Database.Connection);
+				SqlCommand command = new SqlCommand("SP_DeleteStatementBySetupID", Database.Connection);
 				command.CommandType = CommandType.StoredProcedure;
 
-				command.Parameters.AddWithValue("@AccountID", id);
+				command.Parameters.AddWithValue("@SetupID", id);
 
 				command.Connection.Open();
 				try
@@ -427,8 +411,7 @@ namespace PA.StockMarket.DataEntities
 				if (reader != null && !reader.IsClosed)
 				{
 					if (!reader.IsDBNull(reader.GetOrdinal("ID"))) value.ID = reader.GetInt64(reader.GetOrdinal("ID"));
-					if (!reader.IsDBNull(reader.GetOrdinal("AccountID"))) value.AccountID = reader.GetInt64(reader.GetOrdinal("AccountID"));
-					if (!reader.IsDBNull(reader.GetOrdinal("SymbolID"))) value.SymbolID = reader.GetInt64(reader.GetOrdinal("SymbolID"));
+					if (!reader.IsDBNull(reader.GetOrdinal("SetupID"))) value.SetupID = reader.GetInt64(reader.GetOrdinal("SetupID"));
 					if (!reader.IsDBNull(reader.GetOrdinal("LevelPrice"))) value.LevelPrice = reader.GetDecimal(reader.GetOrdinal("LevelPrice"));
 					if (!reader.IsDBNull(reader.GetOrdinal("LevelOpenTime"))) value.LevelOpenTime = reader.GetDateTime(reader.GetOrdinal("LevelOpenTime"));
 					if (!reader.IsDBNull(reader.GetOrdinal("SignalOpenTime"))) value.SignalOpenTime = reader.GetDateTime(reader.GetOrdinal("SignalOpenTime"));
@@ -572,12 +555,12 @@ namespace PA.StockMarket.DataEntities
 			#region List By Foreign Keys
 
 
-			public static List<Statement> ListByAccountID(long id)
+			public static List<Statement> ListBySetupID(long id)
 			{
-				SqlCommand command = new SqlCommand("SP_SelectStatementByAccountID", Database.Connection);
+				SqlCommand command = new SqlCommand("SP_SelectStatementBySetupID", Database.Connection);
 				command.CommandType = CommandType.StoredProcedure;
 
-				command.Parameters.AddWithValue("@AccountID", id);
+				command.Parameters.AddWithValue("@SetupID", id);
 
 				List<Statement> values = new List<Statement>();
 

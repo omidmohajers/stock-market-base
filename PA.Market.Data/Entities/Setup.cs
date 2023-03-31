@@ -8,20 +8,22 @@ using Automation.TableProvider;
 namespace PA.StockMarket.Data
 {
 
-    #region MarketSetting
+    #region Setup
     /// <summary>
-    /// This object represents the properties and methods of a MarketSetting.
+    /// This object represents the properties and methods of a Setup.
     /// </summary>
 
-    public partial class MarketSetting : System.ComponentModel.INotifyPropertyChanged, ICloneable
+    public partial class Setup : System.ComponentModel.INotifyPropertyChanged, ICloneable
     {
         protected long _iD;
-        protected long _accountID;
-        protected long _marketID;
-        protected string _interval = String.Empty;
-        protected bool _isDefault;
+        protected string _name = String.Empty;
+        protected string _description = String.Empty;
+        protected long _createBy;
+        protected long _symbolID;
+        protected string _structureInterval = String.Empty;
+        protected string _triggerInterval = String.Empty;
 
-        public MarketSetting()
+        public Setup()
         {
         }
 
@@ -38,47 +40,69 @@ namespace PA.StockMarket.Data
             }
         }
 
-        public long AccountID
+        public string Name
         {
-            get { return _accountID; }
+            get { return _name; }
             set
             {
-                _accountID = value;
+                _name = value;
                 if (PropertyChanged != null)
-                    PropertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs("AccountID"));
+                    PropertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs("Name"));
             }
         }
 
-        public long MarketID
+        public string Description
         {
-            get { return _marketID; }
+            get { return _description; }
             set
             {
-                _marketID = value;
+                _description = value;
                 if (PropertyChanged != null)
-                    PropertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs("MarketID"));
+                    PropertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs("Description"));
             }
         }
 
-        public string Interval
+        public long CreateBy
         {
-            get { return _interval; }
+            get { return _createBy; }
             set
             {
-                _interval = value;
+                _createBy = value;
                 if (PropertyChanged != null)
-                    PropertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs("Interval"));
+                    PropertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs("CreateBy"));
             }
         }
 
-        public bool IsDefault
+        public long SymbolID
         {
-            get { return _isDefault; }
+            get { return _symbolID; }
             set
             {
-                _isDefault = value;
+                _symbolID = value;
                 if (PropertyChanged != null)
-                    PropertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs("IsDefault"));
+                    PropertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs("SymbolID"));
+            }
+        }
+
+        public string StructureInterval
+        {
+            get { return _structureInterval; }
+            set
+            {
+                _structureInterval = value;
+                if (PropertyChanged != null)
+                    PropertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs("StructureInterval"));
+            }
+        }
+
+        public string TriggerInterval
+        {
+            get { return _triggerInterval; }
+            set
+            {
+                _triggerInterval = value;
+                if (PropertyChanged != null)
+                    PropertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs("TriggerInterval"));
             }
         }
 
@@ -100,18 +124,20 @@ namespace PA.StockMarket.Data
             return errors;
         }
 
-        public MarketSetting TypedClone()
+        public Setup TypedClone()
         {
-            return (MarketSetting)((ICloneable)this).Clone();
+            return (Setup)((ICloneable)this).Clone();
         }
 
-        public void CopyData(MarketSetting value)
+        public void CopyData(Setup value)
         {
             this.ID = value.ID;
-            this.AccountID = value.AccountID;
-            this.MarketID = value.MarketID;
-            this.Interval = value.Interval;
-            this.IsDefault = value.IsDefault;
+            this.Name = value.Name;
+            this.Description = value.Description;
+            this.CreateBy = value.CreateBy;
+            this.SymbolID = value.SymbolID;
+            this.StructureInterval = value.StructureInterval;
+            this.TriggerInterval = value.TriggerInterval;
         }
 
         #endregion Public Methods
@@ -130,13 +156,15 @@ namespace PA.StockMarket.Data
 
         object ICloneable.Clone()
         {
-            MarketSetting obj = new MarketSetting();
+            Setup obj = new Setup();
 
             obj.ID = this.ID;
-            obj.AccountID = this.AccountID;
-            obj.MarketID = this.MarketID;
-            obj.Interval = this.Interval;
-            obj.IsDefault = this.IsDefault;
+            obj.Name = this.Name;
+            obj.Description = this.Description;
+            obj.CreateBy = this.CreateBy;
+            obj.SymbolID = this.SymbolID;
+            obj.StructureInterval = this.StructureInterval;
+            obj.TriggerInterval = this.TriggerInterval;
 
             return obj;
         }
@@ -147,23 +175,25 @@ namespace PA.StockMarket.Data
 
     //***********************************************************************************************
 
-    #region MarketSetting Data Provider
+    #region Setup Data Provider
     namespace DataAccess
     {
 
-        public static class MarketSettingDataProvider
+        internal static class SetupDataProvider
         {
             #region Insert Methods
 
-            public static long Insert(MarketSetting value)
+            public static long Insert(Setup value)
             {
-                SqlCommand command = new SqlCommand("SP_InsertMarketSetting", Database.Connection);
+                SqlCommand command = new SqlCommand("SP_InsertSetup", Database.Connection);
                 command.CommandType = CommandType.StoredProcedure;
 
-                command.Parameters.AddWithValue("@AccountID", value.AccountID);
-                command.Parameters.AddWithValue("@MarketID", value.MarketID);
-                command.Parameters.AddWithValue("@Interval", value.Interval);
-                command.Parameters.AddWithValue("@IsDefault", value.IsDefault);
+                command.Parameters.AddWithValue("@Name", value.Name);
+                command.Parameters.AddWithValue("@Description", value.Description);
+                command.Parameters.AddWithValue("@CreateBy", value.CreateBy);
+                command.Parameters.AddWithValue("@SymbolID", value.SymbolID);
+                command.Parameters.AddWithValue("@StructureInterval", value.StructureInterval);
+                command.Parameters.AddWithValue("@TriggerInterval", value.TriggerInterval);
 
                 command.Parameters.Add("@ID", SqlDbType.BigInt).Direction = ParameterDirection.Output;
 
@@ -183,16 +213,18 @@ namespace PA.StockMarket.Data
 
             #region Update Methods
 
-            public static void Update(MarketSetting value)
+            public static void Update(Setup value)
             {
-                SqlCommand command = new SqlCommand("SP_UpdateMarketSetting", Database.Connection);
+                SqlCommand command = new SqlCommand("SP_UpdateSetup", Database.Connection);
                 command.CommandType = CommandType.StoredProcedure;
 
                 command.Parameters.AddWithValue("@ID", value.ID);
-                command.Parameters.AddWithValue("@AccountID", value.AccountID);
-                command.Parameters.AddWithValue("@MarketID", value.MarketID);
-                command.Parameters.AddWithValue("@Interval", value.Interval);
-                command.Parameters.AddWithValue("@IsDefault", value.IsDefault);
+                command.Parameters.AddWithValue("@Name", value.Name);
+                command.Parameters.AddWithValue("@Description", value.Description);
+                command.Parameters.AddWithValue("@CreateBy", value.CreateBy);
+                command.Parameters.AddWithValue("@SymbolID", value.SymbolID);
+                command.Parameters.AddWithValue("@StructureInterval", value.StructureInterval);
+                command.Parameters.AddWithValue("@TriggerInterval", value.TriggerInterval);
 
                 command.Connection.Open();
                 try
@@ -209,9 +241,9 @@ namespace PA.StockMarket.Data
 
             #region Delete Methods
 
-            public static void Delete(MarketSetting value)
+            public static void Delete(Setup value)
             {
-                SqlCommand command = new SqlCommand("SP_DeleteMarketSetting", Database.Connection);
+                SqlCommand command = new SqlCommand("SP_DeleteSetup", Database.Connection);
                 command.CommandType = CommandType.StoredProcedure;
 
                 command.Parameters.AddWithValue("@ID", value.ID);
@@ -229,7 +261,7 @@ namespace PA.StockMarket.Data
 
             public static void Delete(long id)
             {
-                SqlCommand command = new SqlCommand("SP_DeleteMarketSetting", Database.Connection);
+                SqlCommand command = new SqlCommand("SP_DeleteSetup", Database.Connection);
                 command.CommandType = CommandType.StoredProcedure;
 
                 command.Parameters.AddWithValue("@ID", id);
@@ -247,7 +279,7 @@ namespace PA.StockMarket.Data
 
             public static void DeleteDynamic(string whereCondition)
             {
-                SqlCommand command = new SqlCommand("SP_DeleteMarketSettingDynamic", Database.Connection);
+                SqlCommand command = new SqlCommand("SP_DeleteSetupDynamic", Database.Connection);
                 command.CommandType = CommandType.StoredProcedure;
 
                 command.Parameters.AddWithValue("@WhereCondition", whereCondition);
@@ -265,12 +297,12 @@ namespace PA.StockMarket.Data
 
             #region Delete By Foreign Keys
 
-            public static void DeleteByAccountID(long id)
+            public static void DeleteByCreateBy(long id)
             {
-                SqlCommand command = new SqlCommand("SP_DeleteMarketSettingByAccountID", Database.Connection);
+                SqlCommand command = new SqlCommand("SP_DeleteSetupByCreateBy", Database.Connection);
                 command.CommandType = CommandType.StoredProcedure;
 
-                command.Parameters.AddWithValue("@AccountID", id);
+                command.Parameters.AddWithValue("@CreateBy", id);
 
                 command.Connection.Open();
                 try
@@ -283,12 +315,12 @@ namespace PA.StockMarket.Data
                 }
             }
 
-            public static void DeleteByMarketID(long id)
+            public static void DeleteBySymbolID(long id)
             {
-                SqlCommand command = new SqlCommand("SP_DeleteMarketSettingByMarketID", Database.Connection);
+                SqlCommand command = new SqlCommand("SP_DeleteSetupBySymbolID", Database.Connection);
                 command.CommandType = CommandType.StoredProcedure;
 
-                command.Parameters.AddWithValue("@MarketID", id);
+                command.Parameters.AddWithValue("@SymbolID", id);
 
                 command.Connection.Open();
                 try
@@ -307,17 +339,19 @@ namespace PA.StockMarket.Data
 
             #region Helper Methods
 
-            private static MarketSetting GetObjectFromDataReader(SqlDataReader reader)
+            private static Setup GetObjectFromDataReader(SqlDataReader reader)
             {
-                MarketSetting value = new MarketSetting();
+                Setup value = new Setup();
 
                 if (reader != null && !reader.IsClosed)
                 {
                     if (!reader.IsDBNull(reader.GetOrdinal("ID"))) value.ID = reader.GetInt64(reader.GetOrdinal("ID"));
-                    if (!reader.IsDBNull(reader.GetOrdinal("AccountID"))) value.AccountID = reader.GetInt64(reader.GetOrdinal("AccountID"));
-                    if (!reader.IsDBNull(reader.GetOrdinal("MarketID"))) value.MarketID = reader.GetInt64(reader.GetOrdinal("MarketID"));
-                    if (!reader.IsDBNull(reader.GetOrdinal("Interval"))) value.Interval = reader.GetString(reader.GetOrdinal("Interval"));
-                    if (!reader.IsDBNull(reader.GetOrdinal("IsDefault"))) value.IsDefault = reader.GetBoolean(reader.GetOrdinal("IsDefault"));
+                    if (!reader.IsDBNull(reader.GetOrdinal("Name"))) value.Name = reader.GetString(reader.GetOrdinal("Name"));
+                    if (!reader.IsDBNull(reader.GetOrdinal("Description"))) value.Description = reader.GetString(reader.GetOrdinal("Description"));
+                    if (!reader.IsDBNull(reader.GetOrdinal("CreateBy"))) value.CreateBy = reader.GetInt64(reader.GetOrdinal("CreateBy"));
+                    if (!reader.IsDBNull(reader.GetOrdinal("SymbolID"))) value.SymbolID = reader.GetInt64(reader.GetOrdinal("SymbolID"));
+                    if (!reader.IsDBNull(reader.GetOrdinal("StructureInterval"))) value.StructureInterval = reader.GetString(reader.GetOrdinal("StructureInterval"));
+                    if (!reader.IsDBNull(reader.GetOrdinal("TriggerInterval"))) value.TriggerInterval = reader.GetString(reader.GetOrdinal("TriggerInterval"));
 
                     return value;
                 }
@@ -329,9 +363,9 @@ namespace PA.StockMarket.Data
 
             #region Select Methods
 
-            public static MarketSetting Get(long id)
+            public static Setup Get(long id)
             {
-                SqlCommand command = new SqlCommand("SP_SelectMarketSetting", Database.Connection);
+                SqlCommand command = new SqlCommand("SP_SelectSetup", Database.Connection);
                 command.CommandType = CommandType.StoredProcedure;
 
                 command.Parameters.AddWithValue("@ID", id);
@@ -341,7 +375,7 @@ namespace PA.StockMarket.Data
                 {
                     SqlDataReader reader = command.ExecuteReader();
 
-                    MarketSetting value = null;
+                    Setup value = null;
 
                     if (reader.Read())
                         value = GetObjectFromDataReader(reader);
@@ -357,12 +391,12 @@ namespace PA.StockMarket.Data
                 }
             }
 
-            public static List<MarketSetting> List()
+            public static List<Setup> List()
             {
-                SqlCommand command = new SqlCommand("SP_SelectMarketSettingAll", Database.Connection);
+                SqlCommand command = new SqlCommand("SP_SelectSetupAll", Database.Connection);
                 command.CommandType = CommandType.StoredProcedure;
 
-                List<MarketSetting> values = new List<MarketSetting>();
+                List<Setup> values = new List<Setup>();
 
                 command.Connection.Open();
                 try
@@ -371,7 +405,7 @@ namespace PA.StockMarket.Data
 
                     while (reader.Read())
                     {
-                        MarketSetting value = GetObjectFromDataReader(reader);
+                        Setup value = GetObjectFromDataReader(reader);
                         values.Add(value);
                     }
 
@@ -386,15 +420,15 @@ namespace PA.StockMarket.Data
                 }
             }
 
-            public static List<MarketSetting> ListDynamic(string whereCondition, string orderByExpression)
+            public static List<Setup> ListDynamic(string whereCondition, string orderByExpression)
             {
-                SqlCommand command = new SqlCommand("SP_SelectMarketSettingDynamic", Database.Connection);
+                SqlCommand command = new SqlCommand("SP_SelectSetupDynamic", Database.Connection);
                 command.CommandType = CommandType.StoredProcedure;
 
                 command.Parameters.AddWithValue("@WhereCondition", whereCondition);
                 command.Parameters.AddWithValue("@OrderByExpression", orderByExpression);
 
-                List<MarketSetting> values = new List<MarketSetting>();
+                List<Setup> values = new List<Setup>();
 
                 command.Connection.Open();
                 try
@@ -403,7 +437,7 @@ namespace PA.StockMarket.Data
 
                     while (reader.Read())
                     {
-                        MarketSetting value = GetObjectFromDataReader(reader);
+                        Setup value = GetObjectFromDataReader(reader);
                         values.Add(value);
                     }
 
@@ -418,14 +452,14 @@ namespace PA.StockMarket.Data
                 }
             }
 
-            public static List<MarketSetting> ListDynamic(string whereCondition)
+            public static List<Setup> ListDynamic(string whereCondition)
             {
-                SqlCommand command = new SqlCommand("SP_SelectMarketSettingDynamic", Database.Connection);
+                SqlCommand command = new SqlCommand("SP_SelectSetupDynamic", Database.Connection);
                 command.CommandType = CommandType.StoredProcedure;
 
                 command.Parameters.AddWithValue("@WhereCondition", whereCondition);
 
-                List<MarketSetting> values = new List<MarketSetting>();
+                List<Setup> values = new List<Setup>();
 
                 command.Connection.Open();
                 try
@@ -434,7 +468,7 @@ namespace PA.StockMarket.Data
 
                     while (reader.Read())
                     {
-                        MarketSetting value = GetObjectFromDataReader(reader);
+                        Setup value = GetObjectFromDataReader(reader);
                         values.Add(value);
                     }
 
@@ -452,14 +486,14 @@ namespace PA.StockMarket.Data
             #region List By Foreign Keys
 
 
-            public static List<MarketSetting> ListByAccountID(long id)
+            public static List<Setup> ListByCreateBy(long id)
             {
-                SqlCommand command = new SqlCommand("SP_SelectMarketSettingByAccountID", Database.Connection);
+                SqlCommand command = new SqlCommand("SP_SelectSetupByCreateBy", Database.Connection);
                 command.CommandType = CommandType.StoredProcedure;
 
-                command.Parameters.AddWithValue("@AccountID", id);
+                command.Parameters.AddWithValue("@CreateBy", id);
 
-                List<MarketSetting> values = new List<MarketSetting>();
+                List<Setup> values = new List<Setup>();
 
                 command.Connection.Open();
                 try
@@ -468,7 +502,7 @@ namespace PA.StockMarket.Data
 
                     while (reader.Read())
                     {
-                        MarketSetting value = GetObjectFromDataReader(reader);
+                        Setup value = GetObjectFromDataReader(reader);
                         values.Add(value);
                     }
 
@@ -484,14 +518,14 @@ namespace PA.StockMarket.Data
             }
 
 
-            public static List<MarketSetting> ListByMarketID(long id)
+            public static List<Setup> ListBySymbolID(long id)
             {
-                SqlCommand command = new SqlCommand("SP_SelectMarketSettingByMarketID", Database.Connection);
+                SqlCommand command = new SqlCommand("SP_SelectSetupBySymbolID", Database.Connection);
                 command.CommandType = CommandType.StoredProcedure;
 
-                command.Parameters.AddWithValue("@MarketID", id);
+                command.Parameters.AddWithValue("@SymbolID", id);
 
-                List<MarketSetting> values = new List<MarketSetting>();
+                List<Setup> values = new List<Setup>();
 
                 command.Connection.Open();
                 try
@@ -500,7 +534,7 @@ namespace PA.StockMarket.Data
 
                     while (reader.Read())
                     {
-                        MarketSetting value = GetObjectFromDataReader(reader);
+                        Setup value = GetObjectFromDataReader(reader);
                         values.Add(value);
                     }
 
@@ -523,7 +557,7 @@ namespace PA.StockMarket.Data
         }
 
     }
-    #endregion MarketSetting Data Provider
+    #endregion Setup Data Provider
 
 } // end namespace
 

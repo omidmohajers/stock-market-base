@@ -55,9 +55,12 @@
     <Compile Include="Entities\Kline.cs" />
     <Compile Include="Entities\Market.cs" />
     <Compile Include="Entities\MarketSetting.cs" />
+    <Compile Include="Entities\Setup.cs" />
     <Compile Include="Entities\Statement.cs" />
+    <Compile Include="Entities\StatementView.cs" />
     <Compile Include="Entities\Strategy.cs" />
     <Compile Include="Entities\Symbol.cs" />
+    <Compile Include="Entities\UserSetup.cs" />
     <Compile Include="Entities\WatchList.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

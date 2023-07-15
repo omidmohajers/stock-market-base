@@ -6,6 +6,7 @@ using PA.MarketApi.Bases;
 using PA.StockMarket.Data;
 using PA.StockMarket.Data.DataAccess;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -41,6 +42,8 @@ namespace PA.Market.Model.BackTester
                     Thread.Sleep(wait);
                 try
                 {
+                    if (end <= start.Add(Interval.IntervalTime()))
+                        return existsKlines;
                     List<Candlestick> allGap = await market.KlineCandlestick(Symbol.Name, Interval,
                         Helper.DateTimeToUnixTimeStamp(start),
                         Helper.DateTimeToUnixTimeStamp(end), null);
@@ -51,22 +54,20 @@ namespace PA.Market.Model.BackTester
                     }
                     return allGap;
                 }
-                catch (BinanceServerException)
+                catch (BinanceServerException ex)
                 {
-                    //ex.StatusCode
-                    Thread.Sleep(2000);
-                    return await FillGapAsync(start, end, existsKlines);
+                    if(ParseError(ex.StatusCode,ex.Message))
+                        return await FillGapAsync(start, end, existsKlines);
                 }
-                catch (BinanceHttpException)
+                catch (BinanceHttpException ex)
                 {
-                    //ex.StatusCode
-                    Thread.Sleep(2000);
-                    return await FillGapAsync(start, end, existsKlines);
+                    if (ParseError(ex.StatusCode, ex.Message))
+                        return await FillGapAsync(start, end, existsKlines);
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-                    Thread.Sleep(2000);
-                    return await FillGapAsync(start, end, existsKlines);
+                    if (ParseError(0, ex.Message))
+                        return await FillGapAsync(start, end, existsKlines);
                 }
             }
             try
@@ -120,27 +121,28 @@ namespace PA.Market.Model.BackTester
             }
             catch (BinanceServerException ex)
             {
-                //ex.StatusCode
-                Thread.Sleep(10000);
-                return await FillGapAsync(start, end, existsKlines);
+                if (ParseError(ex.StatusCode, ex.Message))
+                    return await FillGapAsync(start, end, existsKlines);
             }
             catch (BinanceHttpException ex)
             {
-                //ex.StatusCode
-                Thread.Sleep(10000);
-                return await FillGapAsync(start, end, existsKlines);
+                if (ParseError(ex.StatusCode, ex.Message))
+                    return await FillGapAsync(start, end, existsKlines);
             }
             catch (Exception ex)
             {
-                Thread.Sleep(10000);
-                return await FillGapAsync(start, end, existsKlines);
+                if (ParseError(0, ex.Message))
+                    return await FillGapAsync(start, end, existsKlines);
             }
+            return null;
         }
+
+
         public override async Task<List<Candlestick>> GetCandlesAsync()
         {
+            List<Candlestick> data = new List<Candlestick>();
             try
             {
-                List<Candlestick> data = new List<Candlestick>();
                 DateTime end = Clock.Today;
                var klines = KlineDataProvider.GetInterval(Symbol.ID, Interval.ToString(), ProcessTime, end);
                
@@ -152,15 +154,19 @@ namespace PA.Market.Model.BackTester
                     }
                 }
                 data = await FillGapAsync(ProcessTime, end, data);
-                if (data[data.Count - 1].CloseTime > ProcessTime)
-                    ProcessTime = data[data.Count - 1].CloseTime.AddSeconds(1);
+                if (data.Count > 0)
+                {
+                    if (data[data.Count - 1].CloseTime > ProcessTime)
+                        ProcessTime = data[data.Count - 1].CloseTime.AddSeconds(1);
+                }
                 return data;
             }
-            catch
+            catch(Exception ex)
             {
-                Thread.Sleep(10000);
-                return await GetCandlesAsync();
+                if (ParseError(0, ex.Message))
+                    return await GetCandlesAsync();
             }
+            return data;
         }
         public override async Task<DateTime> GetServerTimeAsync()
         {

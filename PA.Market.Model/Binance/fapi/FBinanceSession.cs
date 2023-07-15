@@ -5,6 +5,7 @@ using PA.Market.Model.Bases;
 using PA.MarketApi.Bases;
 using PA.StockMarket.Data;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -43,20 +44,18 @@ namespace PA.MarketApi.Binance.fapi
                 }
                 catch (BinanceServerException ex)
                 {
-                    //ex.StatusCode
-                    Thread.Sleep(2000);
-                    return await FillGapAsync(start ,end , existsKlines);
+                    if (ParseError(ex.StatusCode, ex.Message))
+                        return await FillGapAsync(start, end, existsKlines);
                 }
                 catch (BinanceHttpException ex)
                 {
-                    //ex.StatusCode
-                    Thread.Sleep(2000);
-                    return await FillGapAsync(start, end, existsKlines);
+                    if (ParseError(ex.StatusCode, ex.Message))
+                        return await FillGapAsync(start, end, existsKlines);
                 }
                 catch (Exception ex)
                 {
-                    Thread.Sleep(2000);
-                    return await FillGapAsync(start, end, existsKlines);
+                    if (ParseError(0, ex.Message))
+                        return await FillGapAsync(start, end, existsKlines);
                 }
             }
             try
@@ -110,27 +109,26 @@ namespace PA.MarketApi.Binance.fapi
             }
             catch (BinanceServerException ex)
             {
-                //ex.StatusCode
-                Thread.Sleep(10000);
-                return await FillGapAsync(start, end, existsKlines);
+                if (ParseError(ex.StatusCode, ex.Message))
+                    return await FillGapAsync(start, end, existsKlines);
             }
             catch (BinanceHttpException ex)
             {
-                //ex.StatusCode
-                Thread.Sleep(10000);
-                return await FillGapAsync(start, end, existsKlines);
+                if (ParseError(ex.StatusCode, ex.Message))
+                    return await FillGapAsync(start, end, existsKlines);
             }
             catch (Exception ex)
             {
-                Thread.Sleep(10000);
-                return await FillGapAsync(start, end, existsKlines);
+                if (ParseError(0, ex.Message))
+                    return await FillGapAsync(start, end, existsKlines);
             }
+            return null;
         }
         public override async Task<List<Candlestick>> GetCandlesAsync()
         {
+            List<Candlestick> data = new List<Candlestick>();
             try
             {
-                List<Candlestick> data = new List<Candlestick>();
                 int wait = BinanceWeightChecker.LockIfNessesery();
                 if (wait > 0)
                     Thread.Sleep(wait);
@@ -161,21 +159,20 @@ namespace PA.MarketApi.Binance.fapi
             }
             catch (BinanceServerException ex)
             {
-                //ex.StatusCode
-                Thread.Sleep(10000);
-                return await GetCandlesAsync();
+                if (ParseError(ex.StatusCode, ex.Message))
+                    return await GetCandlesAsync();
             }
             catch (BinanceHttpException ex)
             {
-                //ex.StatusCode
-                Thread.Sleep(10000);
-                return await GetCandlesAsync();
+                if (ParseError(ex.StatusCode, ex.Message))
+                    return await GetCandlesAsync();
             }
             catch (Exception ex)
             {
-                Thread.Sleep(10000);
-                return await GetCandlesAsync();
+                if (ParseError(0, ex.Message))
+                    return await GetCandlesAsync();
             }
+            return data;
         }
         public override async Task<DateTime> GetServerTimeAsync()
         {
@@ -192,21 +189,20 @@ namespace PA.MarketApi.Binance.fapi
             }
             catch (BinanceServerException ex)
             {
-                //ex.StatusCode
-                Thread.Sleep(2000);
-                return await GetServerTimeAsync();
+                if (ParseError(ex.StatusCode, ex.Message))
+                    return await GetServerTimeAsync();
             }
             catch (BinanceHttpException ex)
             {
-                //ex.StatusCode
-                Thread.Sleep(2000);
-                return await GetServerTimeAsync();
+                if (ParseError(ex.StatusCode, ex.Message))
+                    return await GetServerTimeAsync();
             }
             catch (Exception ex)
             {
-                Thread.Sleep(2000);
-                return await GetServerTimeAsync();
+                if (ParseError(0, ex.Message))
+                    return await GetServerTimeAsync();
             }
+            return DateTime.UtcNow;
         }
         public override void LoadLastFromDB()
         {

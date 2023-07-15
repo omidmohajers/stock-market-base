@@ -28,6 +28,7 @@ namespace PA.MarketFetcher.Server
             session.Finished += Session_Finished;
             session.Fetching += Session_Fetching;
             session.DataReceived += Session_DataReceived;
+            session.ErrorReceived += Session_ErrorReceived;
         }
 
         public event EventHandler<MarketDataReceiveEventArgs> CandleReceived;
@@ -46,6 +47,10 @@ namespace PA.MarketFetcher.Server
             }
         }
 
+        private void Session_ErrorReceived(object sender, string e)
+        {
+            Logger.LogReceived(sender, $"Error : {e}", null);
+        }
         private void Session_Stoped(object sender, EventArgs e)
         {
             Logger.LogReceived(sender, "Session Stopped!!!", null);
@@ -69,7 +74,7 @@ namespace PA.MarketFetcher.Server
         }
         private void Session_DataReceived(object sender, MarketDataReceiveEventArgs e)
         {
-            Logger.LogReceived(sender, "Candle Data Received!!!", e.Candles.ToArray());
+            Logger.LogReceived(sender, $"Data Received : {e.Candles.Count} Candle(s)", e.Candles.ToArray());
             CandleReceived?.Invoke(this, e);
         }
 

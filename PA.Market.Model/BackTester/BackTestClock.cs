@@ -35,7 +35,7 @@ namespace PA.Market.Model.BackTester
             Next();
         }
 
-        private void Next()
+        public void Next()
         {
             Today = Today.AddMinutes(MinuteInterval);
             Tick?.Invoke(this, EventArgs.Empty);

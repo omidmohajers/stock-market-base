@@ -36,6 +36,7 @@ namespace PA.MarketApi.Bases
         public event EventHandler<TimeEventArgs> Sleeping = null;
         public event EventHandler<TimeEventArgs> ServerTimeReceived = null;
         public event EventHandler Fetching = null;
+        public event EventHandler<string> ErrorReceived = null;   
 
         public SessionBase(Interval interval)
         {
@@ -137,6 +138,30 @@ namespace PA.MarketApi.Bases
         internal void RaiseStarted()
         {
             Started?.Invoke(this, EventArgs.Empty);
+        }
+        internal void RaiseError(int status, string msg)
+        {
+            ErrorReceived?.Invoke(this, $"{msg} : {status}");
+        }
+
+        protected virtual bool ParseError(int statusCode, string msg)
+        {
+            RaiseError(statusCode, msg);
+            //ex.StatusCode
+            switch (statusCode)
+            {
+                case 200:
+                case 429:
+                case 418:
+                    Thread.Sleep(5000);
+                    return true;
+                case 403:
+                    Thread.Sleep(120000);
+                    return true;
+                case 451:
+                default:
+                    return false;
+            }
         }
 
         protected virtual void AddNewCandles(List<Candlestick> data)

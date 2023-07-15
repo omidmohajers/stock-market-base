@@ -3,7 +3,6 @@ using System.Data.SqlClient;
 using PropertyValidation;
 using System;
 using System.Collections.Generic;
-using Automation.TableProvider;
 
 namespace PA.StockMarket.Data
 {
@@ -333,7 +332,7 @@ namespace PA.StockMarket.Data
     namespace DataAccess
     {
 
-        internal static class StatementViewDataProvider
+        public static class StatementViewDataProvider
         {
 
 

@@ -109,7 +109,7 @@ namespace PA.StockMarket.Data
     namespace DataAccess
     {
 
-        internal static class UserSetupDataProvider
+        public static class UserSetupDataProvider
         {
             #region Insert Methods
 

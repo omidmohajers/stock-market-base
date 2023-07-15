@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using Automation.TableProvider;
 using Binance.Shared.Models;
+using System.Threading;
 
 namespace PA.StockMarket.Data
 {
@@ -28,13 +29,17 @@ namespace PA.StockMarket.Data
 		protected double _volume;
 		protected double _quoteAssetVolume;
 		protected long _numberOfTrades;
-		protected double _rSI;
-		protected double _aTR;
-		protected double _eMA;
-		protected double _sMA;
-		protected double _rMA;
-
-		public Kline()
+		protected decimal _rSI;
+		protected decimal _eMA;
+		protected decimal _sMA;
+		protected decimal _rMA;
+        protected decimal _aTR264;
+        protected decimal _aTR132;
+        protected decimal _aTR66;
+        protected decimal _aTR21;
+		protected decimal _aTR10;
+		protected decimal _aTR5;
+        public Kline()
 		{
 		}
 
@@ -172,76 +177,115 @@ namespace PA.StockMarket.Data
 			}
 		}
 
-		public double RSI
+		public decimal RSI
 		{
 			get { return _rSI; }
 			set
 			{
-				if (double.IsNaN(value))
-					value = 0;
 				_rSI = value;
 				if (PropertyChanged != null)
 					PropertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs("RSI"));
 			}
 		}
 
-		public double ATR
-		{
-			get { return _aTR; }
-			set
-			{
-				if (double.IsNaN(value))
-					value = 0;
-				_aTR = value;
-				if (PropertyChanged != null)
-					PropertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs("ATR"));
-			}
-		}
-
-		public double EMA
+		public decimal EMA
 		{
 			get { return _eMA; }
 			set
 			{
-				if (double.IsNaN(value))
-					value = 0;
 				_eMA = value;
 				if (PropertyChanged != null)
 					PropertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs("EMA"));
 			}
 		}
 
-		public double SMA
+		public decimal SMA
 		{
 			get { return _sMA; }
 			set
 			{
-				if (double.IsNaN(value))
-					value = 0;
 				_sMA = value;
 				if (PropertyChanged != null)
 					PropertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs("SMA"));
 			}
 		}
 
-		public double RMA
+		public decimal RMA
 		{
 			get { return _rMA; }
 			set
 			{
-				if (double.IsNaN(value))
-					value = 0;
 				_rMA = value;
 				if (PropertyChanged != null)
 					PropertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs("RMA"));
 			}
 		}
+        public decimal ATR264
+        {
+            get { return _aTR264; }
+            set
+            {
+                _aTR264 = value;
+                if (PropertyChanged != null)
+                    PropertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs("ATR264"));
+            }
+        }
+        public decimal ATR132
+        {
+            get { return _aTR132; }
+            set
+            {
+                _aTR132 = value;
+                if (PropertyChanged != null)
+                    PropertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs("ATR132"));
+            }
+        }
+        public decimal ATR66
+        {
+            get { return _aTR66; }
+            set
+            {
+                _aTR66 = value;
+                if (PropertyChanged != null)
+                    PropertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs("ATR66"));
+            }
+        }
+        public decimal ATR21
+        {
+            get { return _aTR21; }
+            set
+            {
+                _aTR21 = value;
+                if (PropertyChanged != null)
+                    PropertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs("ATR21"));
+            }
+        }
+        public decimal ATR10
+        {
+            get { return _aTR10; }
+            set
+            {
+                _aTR10 = value;
+                if (PropertyChanged != null)
+                    PropertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs("ATR10"));
+            }
+        }
+        public decimal ATR5
+        {
+            get { return _aTR5; }
+            set
+            {
+                _aTR5 = value;
+                if (PropertyChanged != null)
+                    PropertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs("ATR5"));
+            }
+        }
 
-		#endregion
+        #endregion
 
-		#region Public Methods
+        #region Public Methods
 
-		public List<ValidationResult> Validate()
+        public List<ValidationResult> Validate()
 		{
 			List<ValidationResult> errors = new List<ValidationResult>();
 
@@ -275,10 +319,15 @@ namespace PA.StockMarket.Data
 			this.QuoteAssetVolume = value.QuoteAssetVolume;
 			this.NumberOfTrades = value.NumberOfTrades;
 			this.RSI = value.RSI;
-			this.ATR = value.ATR;
 			this.EMA = value.EMA;
 			this.SMA = value.SMA;
 			this.RMA = value.RMA;
+			this.ATR264= value.ATR264;
+			this.ATR132= value.ATR132;
+			this.ATR66= value.ATR66;
+			this.ATR21= value.ATR21;
+			this.ATR10= value.ATR10;
+			this.ATR5=	value.ATR5;
 		}
 		public void CopyData(Candlestick value)
 		{
@@ -293,11 +342,16 @@ namespace PA.StockMarket.Data
 			this.QuoteAssetVolume = value.QuoteAssetVolume;
 			this.NumberOfTrades = value.NumberOfTrades;
 			this.RSI = value.RSI;
-			this.ATR = value.ATR;
 			this.EMA = value.EMA;
 			this.SMA = value.SMA;
 			this.RMA = value.RMA;
-		}
+            this.ATR264 = value.ATR264;
+            this.ATR132 = value.ATR132;
+            this.ATR66 = value.ATR66;
+            this.ATR21 = value.ATR21;
+            this.ATR10 = value.ATR10;
+            this.ATR5 = value.ATR5;
+        }
 		public Candlestick CopyTo()
 		{
 			Candlestick value = new Candlestick();
@@ -312,8 +366,13 @@ namespace PA.StockMarket.Data
 			value.QuoteAssetVolume  = this.QuoteAssetVolume;
 			value.NumberOfTrades  = this.NumberOfTrades;
 			value.RSI = this.RSI;
-			value.ATR = this.ATR;
-			value.EMA = this.EMA;
+            value.ATR264 = this.ATR264;
+            value.ATR132 = this.ATR132;
+            value.ATR66 = this.ATR66;
+            value.ATR21 = this.ATR21;
+            value.ATR10 = this.ATR10;
+            value.ATR5 = this.ATR5;
+            value.EMA = this.EMA;
 			value.SMA = this.SMA;
 			value.RMA = this.RMA;
 			return value;
@@ -350,8 +409,13 @@ namespace PA.StockMarket.Data
 			obj.QuoteAssetVolume = this.QuoteAssetVolume;
 			obj.NumberOfTrades = this.NumberOfTrades;
 			obj.RSI = this.RSI;
-			obj.ATR = this.ATR;
-			obj.EMA = this.EMA;
+            obj.ATR264 = this.ATR264;
+            obj.ATR132 = this.ATR132;
+            obj.ATR66 = this.ATR66;
+            obj.ATR21 = this.ATR21;
+            obj.ATR10 = this.ATR10;
+            obj.ATR5 = this.ATR5;
+            obj.EMA = this.EMA;
 			obj.SMA = this.SMA;
 			obj.RMA = this.RMA;
 
@@ -370,14 +434,16 @@ namespace PA.StockMarket.Data
 
 		public static class KlineDataProvider
 		{
+			public static object locker = new object();
 			#region Insert Methods
 
 			public static long Insert(Kline value)
 			{
-				SqlCommand command = new SqlCommand("SP_InsertKline", Database.Connection);
+				SqlCommand command = new SqlCommand("SP_InsertUpdateKline", Database.Connection);
 				command.CommandType = CommandType.StoredProcedure;
 
-				command.Parameters.AddWithValue("@SymbolID", value.SymbolID);
+                command.Parameters.AddWithValue("@ID", value.ID);
+                command.Parameters.AddWithValue("@SymbolID", value.SymbolID);
 				command.Parameters.AddWithValue("@Interval", value.Interval);
 				command.Parameters.AddWithValue("@OpenUTCTime", value.OpenUTCTime);
 				command.Parameters.AddWithValue("@OpenPrice", value.OpenPrice);
@@ -388,23 +454,49 @@ namespace PA.StockMarket.Data
 				command.Parameters.AddWithValue("@Volume", value.Volume);
 				command.Parameters.AddWithValue("@QuoteAssetVolume", value.QuoteAssetVolume);
 				command.Parameters.AddWithValue("@NumberOfTrades", value.NumberOfTrades);
-				command.Parameters.AddWithValue("@RSI", value.RSI);
-				command.Parameters.AddWithValue("@ATR", value.ATR);
-				command.Parameters.AddWithValue("@EMA", value.EMA);
-				command.Parameters.AddWithValue("@SMA", value.SMA);
-				command.Parameters.AddWithValue("@RMA", value.RMA);
+                command.Parameters.AddWithValue("@RSI", value.RSI);
+                command.Parameters.AddWithValue("@EMA", value.EMA);
+                command.Parameters.AddWithValue("@SMA", value.SMA);
+                command.Parameters.AddWithValue("@RMA", value.RMA);
 
-				command.Parameters.Add("@ID", SqlDbType.BigInt).Direction = ParameterDirection.Output;
+                command.Parameters.Add("@RID", SqlDbType.BigInt).Direction = ParameterDirection.Output;
+                command.Parameters.Add("@ATR264", SqlDbType.Decimal).Direction = ParameterDirection.Output;
+                command.Parameters.Add("@ATR132", SqlDbType.Decimal).Direction = ParameterDirection.Output;
+                command.Parameters.Add("@ATR66", SqlDbType.Decimal).Direction = ParameterDirection.Output;
+                command.Parameters.Add("@ATR21", SqlDbType.Decimal).Direction = ParameterDirection.Output;
+                command.Parameters.Add("@ATR10", SqlDbType.Decimal).Direction = ParameterDirection.Output;
+                command.Parameters.Add("@ATR5", SqlDbType.Decimal).Direction = ParameterDirection.Output;
 
-				command.Connection.Open();
-				try
+				lock (locker)
 				{
-					GeneralTable.ExecuteCommand(command);
-					return long.Parse(command.Parameters["@ID"].Value.ToString());
-				}
-				finally
-				{
-					command.Connection.Close();
+					command.Connection.Open();
+					try
+					{
+						GeneralTable.ExecuteCommand(command);
+						value.ATR264 = decimal.Parse(command.Parameters["@ATR264"].Value.ToString());
+						value.ATR132 = decimal.Parse(command.Parameters["@ATR132"].Value.ToString());
+						value.ATR66 = decimal.Parse(command.Parameters["@ATR66"].Value.ToString());
+						value.ATR21 = decimal.Parse(command.Parameters["@ATR21"].Value.ToString());
+						value.ATR10 = decimal.Parse(command.Parameters["@ATR10"].Value.ToString());
+						value.ATR5 = decimal.Parse(command.Parameters["@ATR5"].Value.ToString());
+						return long.Parse(command.Parameters["@RID"].Value.ToString());
+					}
+					//catch (SqlException ex)
+					//{
+					//	if (ex.Number == 1205)
+					//	{
+					//		if (command.Connection.State != ConnectionState.Closed)
+					//			command.Connection.Close();
+					//		Thread.Sleep(3000);
+					//		Insert(value);
+					//	}
+					//	return -1;
+					//}
+					finally
+					{
+						if (command.Connection.State != ConnectionState.Closed)
+							command.Connection.Close();
+					}
 				}
 			}
 
@@ -414,7 +506,7 @@ namespace PA.StockMarket.Data
 
 			public static void Update(Kline value)
 			{
-				SqlCommand command = new SqlCommand("SP_UpdateKline", Database.Connection);
+				SqlCommand command = new SqlCommand("SP_InsertUpdateKline", Database.Connection);
 				command.CommandType = CommandType.StoredProcedure;
 
 				command.Parameters.AddWithValue("@ID", value.ID);
@@ -429,17 +521,29 @@ namespace PA.StockMarket.Data
 				command.Parameters.AddWithValue("@Volume", value.Volume);
 				command.Parameters.AddWithValue("@QuoteAssetVolume", value.QuoteAssetVolume);
 				command.Parameters.AddWithValue("@NumberOfTrades", value.NumberOfTrades);
-				command.Parameters.AddWithValue("@RSI", value.RSI == double.NaN ? 0f : value.RSI);
-				command.Parameters.AddWithValue("@ATR", value.ATR == double.NaN ? 0f : value.ATR);
-				command.Parameters.AddWithValue("@EMA", value.EMA == double.NaN ? 0f : value.EMA);
-				command.Parameters.AddWithValue("@SMA", value.SMA == double.NaN ? 0f : value.SMA);
-				command.Parameters.AddWithValue("@RMA", value.RMA == double.NaN ? 0f : value.RMA);
+				command.Parameters.AddWithValue("@RSI", value.RSI);
+				command.Parameters.AddWithValue("@EMA", value.EMA);
+				command.Parameters.AddWithValue("@SMA", value.SMA);
+				command.Parameters.AddWithValue("@RMA", value.RMA);
 
-				command.Connection.Open();
+                command.Parameters.Add("@RID", SqlDbType.BigInt).Direction = ParameterDirection.Output;
+                command.Parameters.Add("@ATR264", SqlDbType.Decimal).Direction = ParameterDirection.Output;
+                command.Parameters.Add("@ATR132", SqlDbType.Decimal).Direction = ParameterDirection.Output;
+                command.Parameters.Add("@ATR66", SqlDbType.Decimal).Direction = ParameterDirection.Output;
+                command.Parameters.Add("@ATR21", SqlDbType.Decimal).Direction = ParameterDirection.Output;
+                command.Parameters.Add("@ATR10", SqlDbType.Decimal).Direction = ParameterDirection.Output;
+                command.Parameters.Add("@ATR5", SqlDbType.Decimal).Direction = ParameterDirection.Output;
+                command.Connection.Open();
 				try
 				{
 					GeneralTable.ExecuteCommand(command);
-				}
+                    value.ATR264 = decimal.Parse(command.Parameters["@ATR264"].Value.ToString());
+                    value.ATR132 = decimal.Parse(command.Parameters["@ATR132"].Value.ToString());
+                    value.ATR66 = decimal.Parse(command.Parameters["@ATR66"].Value.ToString());
+                    value.ATR21 = decimal.Parse(command.Parameters["@ATR21"].Value.ToString());
+                    value.ATR10 = decimal.Parse(command.Parameters["@ATR10"].Value.ToString());
+                    value.ATR5 = decimal.Parse(command.Parameters["@ATR5"].Value.ToString());
+                }
 				finally
 				{
 					command.Connection.Close();
@@ -533,14 +637,27 @@ namespace PA.StockMarket.Data
 				command.Parameters.AddWithValue("@SymbolID", id);
 				command.Parameters.AddWithValue("@Interval", interval);
 				command.Parameters.AddWithValue("@OpenTime", openTime);
-				command.Connection.Open();
-				try
+				lock (locker)
 				{
-					GeneralTable.ExecuteCommand(command);
-				}
-				finally
-				{
-					command.Connection.Close();
+					command.Connection.Open();
+					try
+					{
+						GeneralTable.ExecuteCommand(command);
+					}
+					//catch (SqlException ex)
+					//{
+					//	if (ex.Number == 1205)
+					//	{
+					//		command.Connection.Close();
+					//		Thread.Sleep(3000);
+					//		DeleteDuplicateCandles(id, interval, openTime);
+					//	}
+					//}
+					finally
+					{
+						if (command.Connection.State != ConnectionState.Closed)
+							command.Connection.Close();
+					}
 				}
 			}
 
@@ -552,31 +669,39 @@ namespace PA.StockMarket.Data
 
 			private static Kline GetObjectFromDataReader(SqlDataReader reader)
 			{
-				Kline value = new Kline();
-				if (reader != null && !reader.IsClosed)
+				lock (locker)
 				{
-					if (!reader.IsDBNull(reader.GetOrdinal("ID"))) value.ID = reader.GetInt64(reader.GetOrdinal("ID"));
-					if (!reader.IsDBNull(reader.GetOrdinal("SymbolID"))) value.SymbolID = reader.GetInt64(reader.GetOrdinal("SymbolID"));
-					if (!reader.IsDBNull(reader.GetOrdinal("Interval"))) value.Interval = reader.GetString(reader.GetOrdinal("Interval"));
-					if (!reader.IsDBNull(reader.GetOrdinal("OpenUTCTime"))) value.OpenUTCTime = reader.GetDateTime(reader.GetOrdinal("OpenUTCTime"));
-					if (!reader.IsDBNull(reader.GetOrdinal("OpenPrice"))) value.OpenPrice = reader.GetFloat(reader.GetOrdinal("OpenPrice"));
-					if (!reader.IsDBNull(reader.GetOrdinal("ClosePrice"))) value.ClosePrice = reader.GetFloat(reader.GetOrdinal("ClosePrice"));
-					if (!reader.IsDBNull(reader.GetOrdinal("HighPrice"))) value.HighPrice = reader.GetFloat(reader.GetOrdinal("HighPrice"));
-					if (!reader.IsDBNull(reader.GetOrdinal("LowPrice"))) value.LowPrice = reader.GetFloat(reader.GetOrdinal("LowPrice"));
-					if (!reader.IsDBNull(reader.GetOrdinal("CloseUTCTime"))) value.CloseUTCTime = reader.GetDateTime(reader.GetOrdinal("CloseUTCTime"));
-					if (!reader.IsDBNull(reader.GetOrdinal("Volume"))) value.Volume = reader.GetFloat(reader.GetOrdinal("Volume"));
-					if (!reader.IsDBNull(reader.GetOrdinal("QuoteAssetVolume"))) value.QuoteAssetVolume = reader.GetFloat(reader.GetOrdinal("QuoteAssetVolume"));
-					if (!reader.IsDBNull(reader.GetOrdinal("NumberOfTrades"))) value.NumberOfTrades = reader.GetInt64(reader.GetOrdinal("NumberOfTrades"));
-					if (!reader.IsDBNull(reader.GetOrdinal("RSI"))) value.RSI = reader.GetFloat(reader.GetOrdinal("RSI"));
-					if (!reader.IsDBNull(reader.GetOrdinal("ATR"))) value.ATR = reader.GetFloat(reader.GetOrdinal("ATR"));
-					if (!reader.IsDBNull(reader.GetOrdinal("EMA"))) value.EMA = reader.GetFloat(reader.GetOrdinal("EMA"));
-					if (!reader.IsDBNull(reader.GetOrdinal("SMA"))) value.SMA = reader.GetFloat(reader.GetOrdinal("SMA"));
-					if (!reader.IsDBNull(reader.GetOrdinal("RMA"))) value.RMA = reader.GetFloat(reader.GetOrdinal("RMA"));
+					Kline value = new Kline();
+					if (reader != null && !reader.IsClosed)
+					{
+						if (!reader.IsDBNull(reader.GetOrdinal("ID"))) value.ID = reader.GetInt64(reader.GetOrdinal("ID"));
+						if (!reader.IsDBNull(reader.GetOrdinal("SymbolID"))) value.SymbolID = reader.GetInt64(reader.GetOrdinal("SymbolID"));
+						if (!reader.IsDBNull(reader.GetOrdinal("Interval"))) value.Interval = reader.GetString(reader.GetOrdinal("Interval"));
+						if (!reader.IsDBNull(reader.GetOrdinal("OpenUTCTime"))) value.OpenUTCTime = reader.GetDateTime(reader.GetOrdinal("OpenUTCTime"));
+						if (!reader.IsDBNull(reader.GetOrdinal("OpenPrice"))) value.OpenPrice = reader.GetFloat(reader.GetOrdinal("OpenPrice"));
+						if (!reader.IsDBNull(reader.GetOrdinal("ClosePrice"))) value.ClosePrice = reader.GetFloat(reader.GetOrdinal("ClosePrice"));
+						if (!reader.IsDBNull(reader.GetOrdinal("HighPrice"))) value.HighPrice = reader.GetFloat(reader.GetOrdinal("HighPrice"));
+						if (!reader.IsDBNull(reader.GetOrdinal("LowPrice"))) value.LowPrice = reader.GetFloat(reader.GetOrdinal("LowPrice"));
+						if (!reader.IsDBNull(reader.GetOrdinal("CloseUTCTime"))) value.CloseUTCTime = reader.GetDateTime(reader.GetOrdinal("CloseUTCTime"));
+						if (!reader.IsDBNull(reader.GetOrdinal("Volume"))) value.Volume = reader.GetFloat(reader.GetOrdinal("Volume"));
+						if (!reader.IsDBNull(reader.GetOrdinal("QuoteAssetVolume"))) value.QuoteAssetVolume = reader.GetFloat(reader.GetOrdinal("QuoteAssetVolume"));
+						if (!reader.IsDBNull(reader.GetOrdinal("NumberOfTrades"))) value.NumberOfTrades = reader.GetInt64(reader.GetOrdinal("NumberOfTrades"));
+						if (!reader.IsDBNull(reader.GetOrdinal("RSI"))) value.RSI = reader.GetDecimal(reader.GetOrdinal("RSI"));
+						if (!reader.IsDBNull(reader.GetOrdinal("EMA"))) value.EMA = reader.GetDecimal(reader.GetOrdinal("EMA"));
+						if (!reader.IsDBNull(reader.GetOrdinal("SMA"))) value.SMA = reader.GetDecimal(reader.GetOrdinal("SMA"));
+						if (!reader.IsDBNull(reader.GetOrdinal("RMA"))) value.RMA = reader.GetDecimal(reader.GetOrdinal("RMA"));
+						if (!reader.IsDBNull(reader.GetOrdinal("ATR264"))) value.ATR264 = reader.GetDecimal(reader.GetOrdinal("ATR264"));
+						if (!reader.IsDBNull(reader.GetOrdinal("ATR132"))) value.ATR132 = reader.GetDecimal(reader.GetOrdinal("ATR132"));
+						if (!reader.IsDBNull(reader.GetOrdinal("ATR66"))) value.ATR66 = reader.GetDecimal(reader.GetOrdinal("ATR66"));
+						if (!reader.IsDBNull(reader.GetOrdinal("ATR21"))) value.ATR21 = reader.GetDecimal(reader.GetOrdinal("ATR21"));
+						if (!reader.IsDBNull(reader.GetOrdinal("ATR10"))) value.ATR10 = reader.GetDecimal(reader.GetOrdinal("ATR10"));
+						if (!reader.IsDBNull(reader.GetOrdinal("ATR5"))) value.ATR5 = reader.GetDecimal(reader.GetOrdinal("ATR5"));
 
-					return value;
+						return value;
+					}
+
+					return null;
 				}
-
-				return null;
 			}
 
 			#endregion Helper Methods
@@ -618,25 +743,28 @@ namespace PA.StockMarket.Data
 				command.Parameters.AddWithValue("@SymbolID", symbolID);
 				command.Parameters.AddWithValue("@Interval", interval);
 				List<Kline> values = new List<Kline>();
-				command.Connection.Open();
-				try
+				lock (locker)
 				{
-					SqlDataReader reader = command.ExecuteReader();
-
-					while (reader.Read())
+					command.Connection.Open();
+					try
 					{
-						Kline value = GetObjectFromDataReader(reader);
-						values.Add(value);
+						SqlDataReader reader = command.ExecuteReader();
+
+						while (reader.Read())
+						{
+							Kline value = GetObjectFromDataReader(reader);
+							values.Add(value);
+						}
+
+						if (!reader.IsClosed)
+							reader.Close();
+
+						return values;
 					}
-
-					if (!reader.IsClosed)
-						reader.Close();
-
-					return values;
-				}
-				finally
-				{
-					command.Connection.Close();
+					finally
+					{
+						command.Connection.Close();
+					}
 				}
 			}
 

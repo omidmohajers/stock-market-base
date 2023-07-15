@@ -42,7 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApplicationActiveSessionLogger.cs" />
-    <Compile Include="DailyFetcher.cs" />
+    <Compile Include="BackTestFetcher.cs" />
     <Compile Include="Fetcher.cs" />
     <Compile Include="FetcherManager.cs" />
     <Compile Include="IFetcher.cs" />

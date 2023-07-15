@@ -44,6 +44,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BackTester\BackTestClock.cs" />
+    <Compile Include="BackTester\BackTestSession.cs" />
     <Compile Include="Bases\BinanceWeightChecker.cs" />
     <Compile Include="Bases\ISession.cs" />
     <Compile Include="Bases\MarketDataReceiveEventArgs.cs" />

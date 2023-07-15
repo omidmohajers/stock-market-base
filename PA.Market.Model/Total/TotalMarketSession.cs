@@ -1,10 +1,8 @@
-﻿using Binance.Futures;
-using Binance.Shared.Models;
+﻿using Binance.Shared.Models;
 using PA.MarketApi.Bases;
 using PA.Trading.UAPI;
 using System;
 using System.Collections.Generic;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace PA.MarketApi.Total

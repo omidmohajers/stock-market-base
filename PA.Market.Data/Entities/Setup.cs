@@ -51,6 +51,14 @@ namespace PA.StockMarket.Data
             }
         }
 
+        public string DisplayName
+        {
+            get
+            {
+                return $"{Name} SymbolID:{SymbolID} Level:{StructureInterval} Trigger:{TriggerInterval}";
+            }
+        }
+
         public string Description
         {
             get { return _description; }
@@ -179,7 +187,7 @@ namespace PA.StockMarket.Data
     namespace DataAccess
     {
 
-        internal static class SetupDataProvider
+        public static class SetupDataProvider
         {
             #region Insert Methods
 

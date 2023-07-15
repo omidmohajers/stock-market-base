@@ -22,7 +22,7 @@ namespace PA.MarketFetcher.Server
             if (sender is SessionBase)
             {
                 SessionBase session = sender as SessionBase;
-                ld.SenderOption = string.Format("{0}:{1} ({2})", session.Name, session.Symbol.Name, session.Interval.ToString());
+                ld.SenderOption = string.Format("{0}:{1} ({2})", session.Name, session.Symbol?.Name, session.Interval.ToString());
             }
             Logs.Add(ld);
             LogInserted?.Invoke(this, ld);

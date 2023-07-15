@@ -4,9 +4,7 @@ using PA.StockMarket.Data;
 using PA.StockMarket.Data.DataAccess;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -15,6 +13,7 @@ namespace PA.MarketApi.Bases
     public class SessionBase : ISession
     {
         protected Thread processor;
+
         public Interval Interval { get; set; }
         public int Delay { get; protected set; }
         public DateTime ServerTime { get; protected set; }
@@ -64,10 +63,18 @@ namespace PA.MarketApi.Bases
         {
             ServerTimeReceived?.Invoke(this, new TimeEventArgs(d));
         }
+        public void RaiseDataReceived(List<Candlestick> candles)
+        {
+            DataReceived?.Invoke(this, new MarketDataReceiveEventArgs(candles));
+        }
+        public void RaiseFinished()
+        {
+            Finished?.Invoke(this, EventArgs.Empty);
+        }
 
         protected virtual async void DoWorkAsync()
         {
-            if(Delay > 0)
+            if (Delay > 0)
             {
                 Thread.Sleep(Delay);
             }
@@ -101,6 +108,7 @@ namespace PA.MarketApi.Bases
                 {
                     AddNewCandles(candles);
                     DataReceived?.Invoke(this, new MarketDataReceiveEventArgs(candles));
+
                 }
                 if (processor.ThreadState == ThreadState.Aborted)
                     return;
@@ -144,15 +152,13 @@ namespace PA.MarketApi.Bases
                 data[0].Interval = Interval.ToString();
                 Candles.Insert(0, data[0]);
             }
-            RecalculateATR(data[0]);
             InsertToDB(data[0]);
             LastLoadedCandle = data[0];
             data.RemoveAt(0);
             foreach (Candlestick cndl in data)
             {
-                Candles.Insert(0, cndl);
-                RecalculateATR(cndl);
                 InsertToDB(cndl);
+                Candles.Insert(0, cndl);
             }
             if (data.Count > 0)
                 LastLoadedCandle = data.Last();
@@ -163,63 +169,14 @@ namespace PA.MarketApi.Bases
             KlineDataProvider.DeleteDuplicateCandles(Symbol.ID, Interval.ToString(), candlestick.OpenTime);
         }
 
-        protected void RecalculateATR(Candlestick cndl)
-        {
-            lock (this)
-            {
-                if (Candles.Count > 14)
-                {
-                    Candlestick[] rsiArray = Candles.OrderBy(x => x.OpenTime).ToArray();
-                    double[] value = new RSICalculator().CalculateRSIValuesV2(rsiArray, 14);
-                    cndl.RSI = value[Candles.Count - 1];
-                    value = ATRCalculator.Calculate(14, rsiArray);
-                    cndl.ATR = value[Candles.Count - 1];
-                    double[] ema = EMACalculator.Calculate(rsiArray, 14);
-                    cndl.EMA = ema[Candles.Count - 1];
-                    double[] rma = RMACalculator.Calculate(rsiArray, 14);
-                    cndl.RMA = rma[Candles.Count - 1];
-                    double[] sma = SMACalculator.Calculate(rsiArray, 14);
-                    cndl.SMA = sma[Candles.Count - 1];
-                }
-            }
-            //if (Candles.Count > 14)
-            //{
-            //    Candlestick[] rsiArray = Candles.OrderBy(x => x.OpenTime).ToArray();
-            //    double[] rsi = new RSICalculator().CalculateRSIValuesV2(rsiArray, 14);
-            //    double[] atr = ATRCalculator.Calculate(14, rsiArray);
-            //    for (int j = 0; j < Candles.Count - 14; j++)
-            //    {
-            //        Candles[j + 1].RSI = rsi[Candles.Count - 2 - j];
-            //        Candles[j + 1].ATR = atr[Candles.Count - 2 - j];
-            //    }
-            //    double[] ema = EMACalculator.Calculate(rsiArray, 14);
-            //    int k = Candles.Count - 1;
-            //    for (int i = 0; i < ema.Length; i++)
-            //    {
-            //        Candles[k--].EMA = ema[i];
-            //    }
-            //    double[] rma = RMACalculator.Calculate(rsiArray, 14);
-            //    k = Candles.Count - 1;
-            //    for (int i = 0; i < rma.Length; i++)
-            //    {
-            //        Candles[k--].RMA = rma[i];
-            //    }
-            //    double[] sma = SMACalculator.Calculate(rsiArray, 14);
-            //    k = Candles.Count - 1;
-            //    for (int i = 0; i < sma.Length; i++)
-            //    {
-            //        Candles[k--].SMA = sma[i];
-            //    }
-            //}
-        }
-
         protected void InsertToDB(Candlestick cndl)
         {
             Kline k = new Kline();
             k.CopyData(cndl);
             k.Interval = Interval.ToString();
             k.SymbolID = Symbol.ID;
-            KlineDataProvider.Insert(k);
+            k.ID = KlineDataProvider.Insert(k);
+            cndl.CopyFrom(k.CopyTo());
         }
 
         public virtual async Task<List<Candlestick>> FillGapAsync(DateTime start,DateTime end, List<Candlestick> existsKlines)

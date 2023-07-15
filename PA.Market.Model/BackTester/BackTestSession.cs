@@ -4,24 +4,34 @@ using Binance.Shared.Models;
 using PA.Market.Model.Bases;
 using PA.MarketApi.Bases;
 using PA.StockMarket.Data;
+using PA.StockMarket.Data.DataAccess;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Timers;
 
-namespace PA.MarketApi.Binance.fapi
+namespace PA.Market.Model.BackTester
 {
-    public class FBinanceSession : SessionBase
+    public class BackTestSession : SessionBase
     {
+        public DateTime ProcessTime { get; set; } = DateTime.UtcNow;
+        public BackTestClock Clock { get; }
         private FMarket market = null;
-        private bool firstTimeFetch;
-
-        public FBinanceSession(Interval interval) : base(interval)
+        public BackTestSession(Interval interval,DateTime startTime,BackTestClock clock) : base(interval)
         {
-            firstTimeFetch = true;
-            market = new FMarket();
+            ProcessTime = startTime;
+            Clock = clock; 
+            market = new FMarket(); 
         }
+
+        private void Clock_Tick(object sender, EventArgs e)
+        {
+            Next();
+        }
+
         public override async Task<List<Candlestick>> FillGapAsync(DateTime start, DateTime end, List<Candlestick> existsKlines)
         {
             if (existsKlines.Count == 0)
@@ -41,19 +51,19 @@ namespace PA.MarketApi.Binance.fapi
                     }
                     return allGap;
                 }
-                catch (BinanceServerException ex)
-                {
-                    //ex.StatusCode
-                    Thread.Sleep(2000);
-                    return await FillGapAsync(start ,end , existsKlines);
-                }
-                catch (BinanceHttpException ex)
+                catch (BinanceServerException)
                 {
                     //ex.StatusCode
                     Thread.Sleep(2000);
                     return await FillGapAsync(start, end, existsKlines);
                 }
-                catch (Exception ex)
+                catch (BinanceHttpException)
+                {
+                    //ex.StatusCode
+                    Thread.Sleep(2000);
+                    return await FillGapAsync(start, end, existsKlines);
+                }
+                catch (Exception)
                 {
                     Thread.Sleep(2000);
                     return await FillGapAsync(start, end, existsKlines);
@@ -131,47 +141,22 @@ namespace PA.MarketApi.Binance.fapi
             try
             {
                 List<Candlestick> data = new List<Candlestick>();
-                int wait = BinanceWeightChecker.LockIfNessesery();
-                if (wait > 0)
-                    Thread.Sleep(wait);
-                if (firstTimeFetch)
+                DateTime end = Clock.Today;
+               var klines = KlineDataProvider.GetInterval(Symbol.ID, Interval.ToString(), ProcessTime, end);
+               
+                if (klines.Count > 0)
                 {
-                    if (LastLoadedCandle != null)
+                    foreach(var kline in klines)
                     {
-                        DateTime? start = LastLoadedCandle?.OpenTime;
-                        DateTime? end = await GetServerTimeAsync();
-                        data = await market.KlineCandlestick(Symbol.Name, Interval,
-                            Helper.DateTimeToUnixTimeStamp(start ?? DateTime.UtcNow),
-                            Helper.DateTimeToUnixTimeStamp(end ?? DateTime.UtcNow), null);
-                    }
-                    else
-                    {
-                        data = await market.KlineCandlestick(Symbol.Name, Interval, null, null, 1500);
+                        data.Add(kline.CopyTo());
                     }
                 }
-                else
-                {
-                    data = await market.KlineCandlestick(Symbol.Name, Interval, null, null, 2);
-                }
-                firstTimeFetch = false;
-                BinanceWeightChecker.ProceedWeight(data.Count);
-                if (data.Count > 1)
-                    data.RemoveAt(data.Count - 1);
+                data = await FillGapAsync(ProcessTime, end, data);
+                if (data[data.Count - 1].CloseTime > ProcessTime)
+                    ProcessTime = data[data.Count - 1].CloseTime.AddSeconds(1);
                 return data;
             }
-            catch (BinanceServerException ex)
-            {
-                //ex.StatusCode
-                Thread.Sleep(10000);
-                return await GetCandlesAsync();
-            }
-            catch (BinanceHttpException ex)
-            {
-                //ex.StatusCode
-                Thread.Sleep(10000);
-                return await GetCandlesAsync();
-            }
-            catch (Exception ex)
+            catch
             {
                 Thread.Sleep(10000);
                 return await GetCandlesAsync();
@@ -179,30 +164,13 @@ namespace PA.MarketApi.Binance.fapi
         }
         public override async Task<DateTime> GetServerTimeAsync()
         {
-            int wait = BinanceWeightChecker.LockIfNessesery();
-            if (wait > 0)
-                Thread.Sleep(wait);
             try
             {
-                DateTime d = await market.GetServerTime();
-
-                BinanceWeightChecker.ProceedWeight(1);
+                DateTime d = DateTime.UtcNow;
                 base.RaiseServerTimeReceived(d);
                 return d;
             }
-            catch (BinanceServerException ex)
-            {
-                //ex.StatusCode
-                Thread.Sleep(2000);
-                return await GetServerTimeAsync();
-            }
-            catch (BinanceHttpException ex)
-            {
-                //ex.StatusCode
-                Thread.Sleep(2000);
-                return await GetServerTimeAsync();
-            }
-            catch (Exception ex)
+            catch
             {
                 Thread.Sleep(2000);
                 return await GetServerTimeAsync();
@@ -214,7 +182,50 @@ namespace PA.MarketApi.Binance.fapi
         }
         public override async void StartAsync(int waitBefore)
         {
-           base.StartAsync(waitBefore);
+            base.StartAsync(waitBefore);
+            Clock.Tick += Clock_Tick;
+        }
+
+        private void RepeatTimer_Elapsed(object sender, ElapsedEventArgs e)
+        {
+            Next();
+        }
+
+        protected override async void DoWorkAsync()
+        {
+            if (Delay > 0)
+            {
+                Thread.Sleep(Delay);
+            }
+            Delay = 0;
+            RaiseStarted();
+            RaiseFetching();
+            List<Candlestick> candles = new List<Candlestick>();
+            try
+            {
+                candles = await GetCandlesAsync();
+            }
+            catch
+            {
+                Thread.Sleep(10 * 60 * 1000);
+                DoWorkAsync();
+            }
+            candles = candles.OrderByDescending(x => x.OpenTime).ToList();
+            if (candles.Count > 0)
+            {
+                RaiseDataReceived(candles);
+
+            }
+            if (processor.ThreadState == ThreadState.Aborted)
+                return;
+        }
+        public void Next()
+        {
+            DoWorkAsync();
+        }
+        protected override void AddNewCandles(List<Candlestick> data)
+        {
+            base.AddNewCandles(data);
         }
         public override void Stop()
         {

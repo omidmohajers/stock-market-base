@@ -144,8 +144,14 @@ namespace PA.MarketApi.Bases
             ErrorReceived?.Invoke(this, $"{msg} : {status}");
         }
 
-        protected virtual bool ParseError(int statusCode, string msg)
+        protected virtual bool ParseError(int statusCode, Exception ex)
         {
+            var msg = ex.Message;
+            while(ex.InnerException!= null)
+            {
+                msg += $"({ex.InnerException.Message})";
+                ex = ex.InnerException;
+            }
             RaiseError(statusCode, msg);
             //ex.StatusCode
             switch (statusCode)

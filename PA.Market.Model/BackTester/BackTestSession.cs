@@ -42,32 +42,33 @@ namespace PA.Market.Model.BackTester
                     Thread.Sleep(wait);
                 try
                 {
-                    if (end <= start.Add(Interval.IntervalTime()))
-                        return existsKlines;
+                    //if (end <= start.Add(Interval.IntervalTime()))
+                    //    return existsKlines;
                     List<Candlestick> allGap = await market.KlineCandlestick(Symbol.Name, Interval,
                         Helper.DateTimeToUnixTimeStamp(start),
-                        Helper.DateTimeToUnixTimeStamp(end), null);
+                        null, 1500);
                     BinanceWeightChecker.ProceedWeight(allGap.Count);
                     foreach (Candlestick cs in allGap)
                     {
                         InsertToDB(cs);
                     }
-                    return allGap;
+                    return allGap ?? new List<Candlestick>();
                 }
                 catch (BinanceServerException ex)
                 {
-                    if(ParseError(ex.StatusCode,ex.Message))
+                    if(ParseError(ex.StatusCode,ex))
                         return await FillGapAsync(start, end, existsKlines);
                 }
                 catch (BinanceHttpException ex)
                 {
-                    if (ParseError(ex.StatusCode, ex.Message))
+                    if (ParseError(ex.StatusCode, ex))
                         return await FillGapAsync(start, end, existsKlines);
                 }
                 catch (Exception ex)
                 {
-                    if (ParseError(0, ex.Message))
+                    if (ParseError(0, ex))
                         return await FillGapAsync(start, end, existsKlines);
+                    return existsKlines;
                 }
             }
             try
@@ -117,24 +118,24 @@ namespace PA.Market.Model.BackTester
                 }
                 bGap.AddRange(existsKlines);
                 bGap.AddRange(aGap);
-                return bGap;
+                return bGap ?? new List<Candlestick>();
             }
             catch (BinanceServerException ex)
             {
-                if (ParseError(ex.StatusCode, ex.Message))
+                if (ParseError(ex.StatusCode, ex))
                     return await FillGapAsync(start, end, existsKlines);
             }
             catch (BinanceHttpException ex)
             {
-                if (ParseError(ex.StatusCode, ex.Message))
+                if (ParseError(ex.StatusCode, ex))
                     return await FillGapAsync(start, end, existsKlines);
             }
             catch (Exception ex)
             {
-                if (ParseError(0, ex.Message))
+                if (ParseError(0, ex))
                     return await FillGapAsync(start, end, existsKlines);
             }
-            return null;
+            return new List<Candlestick>();
         }
 
 
@@ -144,29 +145,41 @@ namespace PA.Market.Model.BackTester
             try
             {
                 DateTime end = Clock.Today;
-               var klines = KlineDataProvider.GetInterval(Symbol.ID, Interval.ToString(), ProcessTime, end);
-               
+                if (end < ProcessTime)
+                    return data;
+                var klines = KlineDataProvider.GetInterval(Symbol.ID, Interval.ToString(), ProcessTime, end);
+
                 if (klines.Count > 0)
                 {
-                    foreach(var kline in klines)
+                    foreach (var kline in klines)
                     {
                         data.Add(kline.CopyTo());
                     }
                 }
-                data = await FillGapAsync(ProcessTime, end, data);
-                if (data.Count > 0)
+                int count = 0;
+                DateTime bd = ProcessTime;
+                while(bd < end)
                 {
-                    if (data[data.Count - 1].CloseTime > ProcessTime)
-                        ProcessTime = data[data.Count - 1].CloseTime.AddSeconds(1);
+                    count++;
+                    bd += Interval.IntervalTime();
                 }
-                return data;
+                if(count != data.Count)
+                    data = await FillGapAsync(ProcessTime, end, data) ?? new List<Candlestick>();
+
+                if (data?.Count > 0)
+                {
+                    data = data.OrderBy(x => x.OpenTime).ToList();
+                    if (data[data.Count - 1].CloseTime > ProcessTime)
+                        ProcessTime = data[data.Count - 1].CloseTime;
+                }
+                return data ?? new List<Candlestick>();
             }
             catch(Exception ex)
             {
-                if (ParseError(0, ex.Message))
+                if (ParseError(0, ex))
                     return await GetCandlesAsync();
             }
-            return data;
+            return data ?? new List<Candlestick>();
         }
         public override async Task<DateTime> GetServerTimeAsync()
         {
@@ -227,6 +240,10 @@ namespace PA.Market.Model.BackTester
         }
         public void Next()
         {
+            if (Clock.Today <= ProcessTime)
+            {
+                return;
+            }
             DoWorkAsync();
         }
         protected override void AddNewCandles(List<Candlestick> data)

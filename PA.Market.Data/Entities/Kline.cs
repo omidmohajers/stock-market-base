@@ -473,12 +473,12 @@ namespace PA.StockMarket.Data
 					try
 					{
 						GeneralTable.ExecuteCommand(command);
-						value.ATR264 = decimal.Parse(command.Parameters["@ATR264"].Value.ToString());
-						value.ATR132 = decimal.Parse(command.Parameters["@ATR132"].Value.ToString());
-						value.ATR66 = decimal.Parse(command.Parameters["@ATR66"].Value.ToString());
-						value.ATR21 = decimal.Parse(command.Parameters["@ATR21"].Value.ToString());
-						value.ATR10 = decimal.Parse(command.Parameters["@ATR10"].Value.ToString());
-						value.ATR5 = decimal.Parse(command.Parameters["@ATR5"].Value.ToString());
+						value.ATR264 = decimal.Parse(command.Parameters["@ATR264"].Value?.ToString());
+						value.ATR132 = decimal.Parse(command.Parameters["@ATR132"].Value?.ToString());
+						value.ATR66 = decimal.Parse(command.Parameters["@ATR66"].Value?.ToString());
+						value.ATR21 = decimal.Parse(command.Parameters["@ATR21"].Value?.ToString());
+						value.ATR10 = decimal.Parse(command.Parameters["@ATR10"].Value?.ToString());
+						value.ATR5 = decimal.Parse(command.Parameters["@ATR5"].Value?.ToString());
 						return long.Parse(command.Parameters["@RID"].Value.ToString());
 					}
 					//catch (SqlException ex)
@@ -655,7 +655,7 @@ namespace PA.StockMarket.Data
 					//}
 					finally
 					{
-						if (command.Connection.State != ConnectionState.Closed)
+						//if (command.Connection.State != ConnectionState.Closed)
 							command.Connection.Close();
 					}
 				}

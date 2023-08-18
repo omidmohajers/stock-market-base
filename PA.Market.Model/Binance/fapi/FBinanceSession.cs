@@ -44,17 +44,17 @@ namespace PA.MarketApi.Binance.fapi
                 }
                 catch (BinanceServerException ex)
                 {
-                    if (ParseError(ex.StatusCode, ex.Message))
+                    if (ParseError(ex.StatusCode, ex))
                         return await FillGapAsync(start, end, existsKlines);
                 }
                 catch (BinanceHttpException ex)
                 {
-                    if (ParseError(ex.StatusCode, ex.Message))
+                    if (ParseError(ex.StatusCode, ex))
                         return await FillGapAsync(start, end, existsKlines);
                 }
                 catch (Exception ex)
                 {
-                    if (ParseError(0, ex.Message))
+                    if (ParseError(0, ex))
                         return await FillGapAsync(start, end, existsKlines);
                 }
             }
@@ -109,17 +109,17 @@ namespace PA.MarketApi.Binance.fapi
             }
             catch (BinanceServerException ex)
             {
-                if (ParseError(ex.StatusCode, ex.Message))
+                if (ParseError(ex.StatusCode, ex))
                     return await FillGapAsync(start, end, existsKlines);
             }
             catch (BinanceHttpException ex)
             {
-                if (ParseError(ex.StatusCode, ex.Message))
+                if (ParseError(ex.StatusCode, ex))
                     return await FillGapAsync(start, end, existsKlines);
             }
             catch (Exception ex)
             {
-                if (ParseError(0, ex.Message))
+                if (ParseError(0, ex))
                     return await FillGapAsync(start, end, existsKlines);
             }
             return null;
@@ -159,17 +159,17 @@ namespace PA.MarketApi.Binance.fapi
             }
             catch (BinanceServerException ex)
             {
-                if (ParseError(ex.StatusCode, ex.Message))
+                if (ParseError(ex.StatusCode, ex))
                     return await GetCandlesAsync();
             }
             catch (BinanceHttpException ex)
             {
-                if (ParseError(ex.StatusCode, ex.Message))
+                if (ParseError(ex.StatusCode, ex))
                     return await GetCandlesAsync();
             }
             catch (Exception ex)
             {
-                if (ParseError(0, ex.Message))
+                if (ParseError(0, ex))
                     return await GetCandlesAsync();
             }
             return data;
@@ -189,17 +189,17 @@ namespace PA.MarketApi.Binance.fapi
             }
             catch (BinanceServerException ex)
             {
-                if (ParseError(ex.StatusCode, ex.Message))
+                if (ParseError(ex.StatusCode, ex))
                     return await GetServerTimeAsync();
             }
             catch (BinanceHttpException ex)
             {
-                if (ParseError(ex.StatusCode, ex.Message))
+                if (ParseError(ex.StatusCode, ex))
                     return await GetServerTimeAsync();
             }
             catch (Exception ex)
             {
-                if (ParseError(0, ex.Message))
+                if (ParseError(0, ex))
                     return await GetServerTimeAsync();
             }
             return DateTime.UtcNow;
